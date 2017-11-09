@@ -24,5 +24,22 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   clean_names() %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death))
+```
+
+
+```{r xs2329}
+cod_data %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  group_by(cause_of_death) %>% 
+  mutate(mortality = observed_deaths/population * 10000) %>% 
+  ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="locality vs. mortality") +
+  labs(x="locality", y="mortality") 
+
 
 ```
+
+
