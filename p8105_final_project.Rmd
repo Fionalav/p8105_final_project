@@ -12,12 +12,7 @@ library(rvest)
 library(httr)
 library(janitor)
 library(stringr)
-<<<<<<< HEAD
 library(readxl)
-library(janitor)
-=======
-
->>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
 ```
 
 ```{r load data}
@@ -25,18 +20,4 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   clean_names() %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death))
-<<<<<<< HEAD
-```
-
-```{r delete state}
-cod_data %>%
-  str()
- 
-  
-=======
->>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
-```
-
-```{r yz}
-#####
 ```
