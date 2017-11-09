@@ -26,3 +26,14 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   mutate(percent_excess_death = as.numeric(percent_excess_death))
 
 ```
+```{r wp2241}
+gp_cod_data = cod_data
+ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = "identity")+
+facet_grid(. ~ locality) 
+
+
+
+
+
+
+```
