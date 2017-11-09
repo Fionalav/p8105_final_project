@@ -26,3 +26,19 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   mutate(percent_excess_death = as.numeric(percent_excess_death))
 
 ```
+
+
+```{r cl3664}
+cod_datayr = cod_data
+cod_datayr%>%
+  filter(!is.na(observed_deaths),
+         state != "United States")%>%
+  View()
+  ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
+geom_bar(aes(fill = cause_of_death), stat = "identity")
+```
+
+```{r cl3664}
+
+```
+
