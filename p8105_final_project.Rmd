@@ -5,16 +5,18 @@ date: "November 2, 2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ```{r load lib}
 library(tidyverse)
 library(rvest)
 library(httr)
+library(readxl)
+library(janitor)
 ```
 
 ```{r load data}
-data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv")
+cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
+  clean_names() %>%
+  separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
+  mutate(percent_excess_death = as.numeric(percent_excess_death))
 ```
