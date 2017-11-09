@@ -43,8 +43,41 @@ cod_data %>%
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
+<<<<<<< HEAD
+```{r wp2241}
+gp_cod_data = cod_data
+ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = "identity")+
+facet_grid(. ~ locality) 
 
 
+
+```
+
+
+=======
+
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+```{r cl3664}
+cod_datayr = cod_data
+cod_datayr%>%
+  filter(!is.na(observed_deaths),
+         state != "United States")%>%
+  View()
+  ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
+geom_bar(aes(fill = cause_of_death), stat = "identity")
+```
+
+```{r cl3664}
+
+```
+
+=======
+>>>>>>> abc73c748c35d93567d6f649e1efab53bca2e3cb
+=======
+>>>>>>> 156a7fad0d8d92ed84b93df41626c41c30f01ab0
 ```{r yz3306.1}
 #For each of the five cause of death, what is the mean percent of excess death?
 library(forcats)
@@ -63,5 +96,14 @@ cod_data %>%
 ```{r yz3306.2}
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
+<<<<<<< HEAD
+>>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
 ```
+=======
+```
+<<<<<<< HEAD
 
+=======
+>>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
+>>>>>>> abc73c748c35d93567d6f649e1efab53bca2e3cb
+>>>>>>> 156a7fad0d8d92ed84b93df41626c41c30f01ab0
