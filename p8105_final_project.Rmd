@@ -13,14 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rvest)
 library(httr)
-library(janitor)
 ```
 
 ```{r load data}
-data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
-  clean_names() %>%
-  rename(potential_excess_death = percent_potentially_excess_deaths)
-  
-
+data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv")
 ```
-
