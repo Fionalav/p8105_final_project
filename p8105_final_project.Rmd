@@ -22,29 +22,29 @@ library(readxl)
 ```{r load data}
 cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
   clean_names() %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death))
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
 ```
 
 
-```{r xs2329}
+```{r xs2329 plot}
 cod_data %>%
-  na.omit() %>%
-  filter(!(state == "United States")) %>%
   group_by(cause_of_death) %>% 
-  mutate(mortality = observed_deaths/population * 10000) %>% 
   ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title="locality vs. mortality") +
+  labs(title="Locality vs. Mortality") +
   labs(x="locality", y="mortality") 
-
-
 ```
 
-<<<<<<< HEAD
+```{r xs2329 lm}
+mortality_lm = lm(mortality ~locality, data = cod_data)
+summary(mortality_lm)
+```
 
-=======
+
 ```{r yz3306.1}
 #For each of the five cause of death, what is the mean percent of excess death?
 library(forcats)
@@ -64,4 +64,4 @@ cod_data %>%
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
 ```
->>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
+
