@@ -25,7 +25,7 @@ data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_C
 >>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
 library(janitor)
 library(stringr)
-
+library(readxl)
 ```
 
 ```{r load data}
@@ -38,8 +38,4 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
 >>>>>>> 980a84c5c28ba03b140e30b0d117c7dfdf31da9a
 =======
 >>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
-```
-
-```{r yz}
-#####
 ```
