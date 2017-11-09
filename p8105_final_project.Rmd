@@ -14,31 +14,32 @@ library(tidyverse)
 library(rvest)
 library(httr)
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```
 
 ```{r load data}
 data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv")
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
 library(janitor)
 library(stringr)
-=======
-library(readxl)
-library(janitor)
->>>>>>> 862e6cd40167b5129256e61c0cbfd8a364e52c1f
+
 ```
 
 ```{r load data}
 cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
   clean_names() %>%
-<<<<<<< HEAD
-  mutate(percent_potentially_excess_deaths = as.numeric(str_sub(percent_potentially_excess_deaths, 1,-2)))
-  
- names(cod_data) 
- class(cod_data$percent_potentially_excess_deaths)
-=======
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death))
+<<<<<<< HEAD
 >>>>>>> 862e6cd40167b5129256e61c0cbfd8a364e52c1f
 >>>>>>> 980a84c5c28ba03b140e30b0d117c7dfdf31da9a
+=======
+>>>>>>> f41135d916764ecfba08d2ca5bf89e4d77d52195
+```
+
+```{r yz}
+#####
 ```
