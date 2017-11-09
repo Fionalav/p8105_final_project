@@ -24,6 +24,21 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   clean_names() %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death))
+```
+
+
+```{r xs2329}
+cod_data %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  group_by(cause_of_death) %>% 
+  mutate(mortality = observed_deaths/population * 10000) %>% 
+  ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="locality vs. mortality") +
+  labs(x="locality", y="mortality") 
+
 
 ```
 <<<<<<< HEAD
@@ -39,6 +54,9 @@ facet_grid(. ~ locality)
 
 =======
 
+<<<<<<< HEAD
+
+=======
 ```{r yz3306.1}
 #For each of the five cause of death, what is the mean percent of excess death?
 library(forcats)
@@ -57,5 +75,10 @@ cod_data %>%
 ```{r yz3306.2}
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
+<<<<<<< HEAD
 >>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
 ```
+=======
+```
+>>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
+>>>>>>> abc73c748c35d93567d6f649e1efab53bca2e3cb
