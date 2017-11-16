@@ -235,7 +235,11 @@ $(document).ready(function () {
 ## )</code></pre>
 <pre><code>## Warning: Too many values at 191748 locations: 1, 2, 3, 4, 5, 6, 7, 8, 9,
 ## 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...</code></pre>
-<p>Added a variable <code>mortality</code> which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
+<ul>
+<li>the <code>year</code> variable contains data collected from 2005-2015.</li>
+<li>filtered out <code>United States</code> in the <code>state</code> variable.</li>
+<li>Added a variable <code>mortality</code> which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</li>
+</ul>
 <p>xs2329: This bar graph shows the distribution of cause of death within mortality in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
 <pre class="r"><code>cod_data %&gt;%
   group_by(cause_of_death) %&gt;% 
@@ -245,6 +249,13 @@ $(document).ready(function () {
   labs(title=&quot;Locality vs. Mortality&quot;) +
   labs(x=&quot;locality&quot;, y=&quot;mortality&quot;) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/xs2329%20plot-1.png" width="672" /></p>
+<pre class="r"><code>cod_data %&gt;%
+  group_by(cause_of_death) %&gt;% 
+  ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title=&quot;Locality vs. Mortality&quot;) +
+  labs(x=&quot;locality&quot;, y=&quot;mortality&quot;) </code></pre>
+<p><img src="p8105_final_project_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code>mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)</code></pre>
 <pre><code>## 

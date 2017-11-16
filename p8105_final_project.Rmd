@@ -27,8 +27,9 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
 ```
-
-Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
+- the `year` variable contains data collected from 2005-2015.
+- filtered out `United States` in the `state` variable.
+- Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
 
 
@@ -45,6 +46,16 @@ cod_data %>%
   labs(title="Locality vs. Mortality") +
   labs(x="locality", y="mortality") 
 ```
+
+```{r}
+cod_data %>%
+  group_by(cause_of_death) %>% 
+  ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="Locality vs. Mortality") +
+  labs(x="locality", y="mortality") 
+```
+
 
 ```{r xs2329 lm}
 mortality_lm = lm(mortality ~locality, data = cod_data)
