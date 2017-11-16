@@ -25,10 +25,16 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   na.omit() %>%
   filter(!(state == "United States")) %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
-```
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+##columns removed
 
-Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
+ #"state_fips_code"           "hhs_region"                "age_range"    "benchmark"   "potentially_excess_deaths" "percent_excess_death"      "mortality"   
+
+```
+- the `year` variable contains data collected from 2005-2015.
+- filtered out `United States` in the `state` variable.
+- Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
 
 
@@ -46,11 +52,24 @@ cod_data %>%
   labs(x="locality", y="mortality") 
 ```
 
+```{r xs2329 boxplot}
+cod_data %>%
+  group_by(cause_of_death) %>% 
+  ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="Locality vs. Mortality") +
+  labs(x="locality", y="mortality") 
+```
+
+
+
 ```{r xs2329 lm}
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
-
+interpretation on linear regression:
+We expect to see 0.22576 less deaths for every 10000 people in metropolitan region as compared to all regions. 
+We expect to see 1.14451 more death for every 10000 people in nonmetropolitan region as compared to all regions.
 
 <<<<<<< HEAD
 ```{r wp2241}
@@ -99,12 +118,17 @@ cod_data %>%
   mutate(mean_percent_excess_death = mean(percent_excess_death)) %>%
   ungroup(cause_of_death) %>%
   mutate(cause_of_death = fct_reorder(cause_of_death, mean_percent_excess_death)) %>%
-  ggplot(aes(x = cause_of_death, y = percent_excess_death)) +
+  ggplot(aes(x = cause_of_death, y = percent_excess_death, color = cause_of_death)) +
   geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
+  theme(legend.position = "bottom")
+
 ```
 
 ```{r yz3306.2}
+#regress percent of excess death on cause of death, which is a categorical variable.
+#with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates 
+
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
 
