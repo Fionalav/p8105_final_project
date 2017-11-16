@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load lib}
+```{r load lib, include=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
@@ -25,16 +25,16 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   na.omit() %>%
   filter(!(state == "United States")) %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
-  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
-
-##columns removed
-
- #"state_fips_code"           "hhs_region"                "age_range"    "benchmark"   "potentially_excess_deaths" "percent_excess_death"      "mortality"   
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
 ```
 
-                  
-  
+Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
+
+
+
+xs2329:
+This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. 
+
 
 ```{r xs2329 plot}
 cod_data %>%
@@ -50,8 +50,11 @@ cod_data %>%
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
+
+
 <<<<<<< HEAD
 ```{r wp2241}
+### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data
 ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = "identity")+
 facet_grid(. ~ locality) 
@@ -61,46 +64,45 @@ facet_grid(. ~ locality)
 ```
 
 
+=======
 
-```{r cl3664}
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+```{r cl3664 plot}
 cod_datayr = cod_data
 cod_datayr%>%
   filter(!is.na(observed_deaths),
          state != "United States")%>%
-  View()
+
   ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
 geom_bar(aes(fill = cause_of_death), stat = "identity")
 ```
 
-```{r cl3664}
+```{r cl3664 lm}
 
 ```
 
 
-```{r yz3306_1_plot}
+```{r yz3306.1}
 #For each of the five cause of death, what is the mean percent of excess death?
-
 library(forcats)
 names(cod_data)
 cod_data %>%
   na.omit %>%
   group_by(cause_of_death) %>%
-  mutate(mean_percent_excess_death = mean(percent_excess_death)) %>% 
+  mutate(mean_percent_excess_death = mean(percent_excess_death)) %>%
   ungroup(cause_of_death) %>%
   mutate(cause_of_death = fct_reorder(cause_of_death, mean_percent_excess_death)) %>%
-  ggplot(aes(x = cause_of_death, y = percent_excess_death, color = cause_of_death)) +
+  ggplot(aes(x = cause_of_death, y = percent_excess_death)) +
   geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
-  theme(legend.position = "bottom")
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
 ```
 
-```{r yz3306_2_lm}
-#regress percent of excess death on cause of death, which is a categorical variable.
-#with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates 
+```{r yz3306.2}
+cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
+broom::tidy(cod_lm)
 
-cod_lm_yz = lm(percent_excess_death ~cause_of_death, data = cod_data)
-broom::tidy(cod_lm_yz)
-#summary(cod_lm_yz)
-#anova(cod_lm_yz)
 ```
 
