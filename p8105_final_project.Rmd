@@ -25,7 +25,12 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   na.omit() %>%
   filter(!(state == "United States")) %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+##columns removed
+
+ #"state_fips_code"           "hhs_region"                "age_range"    "benchmark"   "potentially_excess_deaths" "percent_excess_death"      "mortality"   
+
 ```
 - the `year` variable contains data collected from 2005-2015.
 - filtered out `United States` in the `state` variable.
@@ -106,12 +111,17 @@ cod_data %>%
   mutate(mean_percent_excess_death = mean(percent_excess_death)) %>%
   ungroup(cause_of_death) %>%
   mutate(cause_of_death = fct_reorder(cause_of_death, mean_percent_excess_death)) %>%
-  ggplot(aes(x = cause_of_death, y = percent_excess_death)) +
+  ggplot(aes(x = cause_of_death, y = percent_excess_death, color = cause_of_death)) +
   geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
+  theme(legend.position = "bottom")
+
 ```
 
 ```{r yz3306.2}
+#regress percent of excess death on cause of death, which is a categorical variable.
+#with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates 
+
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
 
