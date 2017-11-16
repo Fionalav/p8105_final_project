@@ -106,8 +106,8 @@ cod_datayr%>%
   ungroup(year, locality)%>%
   ggplot(aes(x = year, y = year_percent_death))+
   facet_grid(. ~locality)+
-geom_line(aes(color = cause_of_death),size = 1)+
-  theme_light()
+geom_line(aes(color = cause_of_death),size = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r cl3664 plot2}
@@ -119,8 +119,8 @@ cod_datayr%>%
   ungroup(year, locality)%>%
   ggplot(aes(x = locality, y = cause_percent_death))+
   facet_grid(. ~cause_of_death)+
-geom_boxplot(aes(fill = locality))+
-  theme_light()
+geom_boxplot(aes(fill = locality)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r cl3664 lm}
