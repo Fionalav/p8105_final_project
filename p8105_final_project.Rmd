@@ -161,9 +161,10 @@ cod_lm_yz3 = lm(percent_excess_death ~cause_of_death + locality, data = cod_data
 broom::tidy(cod_lm_yz3)
 ```
 ```{r Questions}
-#Do we need to include the plot of the linear model?
-#Why is everything significant? Is there a problem?
-#How to make a scatterplot for regression with catagorical variables?
-#How to interpret percent excess death?
+#Do we need to include the plot of the linear model? Some plots. 
+#Why is everything significant? Is there a problem? Don't focus on p-value. Calculate CI and other estimates.
+#How to make a scatterplot for regression with catagorical variables? We don't need to.
+#How to interpret percent excess death? According to the benchmark of the three lowest states.
+#How to make a map? Still under investigation...
 ```
 

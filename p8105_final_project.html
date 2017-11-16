@@ -301,15 +301,30 @@ broom::tidy(gp_locality_lm)</code></pre>
 <div id="head" class="section level1">
 <h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre class="r"><code>cod_datayr = cod_data
+<pre class="r"><code># average percent access death for each cause in different locality 2005-2015
+cod_datayr = cod_data
 cod_datayr%&gt;%
-  filter(!is.na(observed_deaths),
-         state != &quot;United States&quot;)%&gt;%
-
-  ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
-geom_bar(aes(fill = cause_of_death), stat = &quot;identity&quot;)</code></pre>
+  group_by(cause_of_death,year, locality)%&gt;%
+  mutate(year_percent_death=mean(percent_excess_death))%&gt;%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%&gt;%
+  ungroup(year, locality)%&gt;%
+  ggplot(aes(x = year, y = year_percent_death))+
+  facet_grid(. ~locality)+
+geom_line(aes(color = cause_of_death),size = 1)+
+  theme_light()</code></pre>
 <p><img src="p8105_final_project_files/figure-html/cl3664%20plot-1.png" width="672" /></p>
-<pre class="r"><code>#For each of the five cause of death, what is the mean percent of excess death?
+<pre class="r"><code># mean access percent death of each cause in different locality
+cod_datayr%&gt;%
+    group_by(cause_of_death,year, locality)%&gt;%
+  mutate(cause_percent_death=mean(percent_excess_death))%&gt;%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%&gt;%
+  ungroup(year, locality)%&gt;%
+  ggplot(aes(x = locality, y = cause_percent_death))+
+  facet_grid(. ~cause_of_death)+
+geom_boxplot(aes(fill = locality))+
+  theme_light()</code></pre>
+<p><img src="p8105_final_project_files/figure-html/cl3664%20plot2-1.png" width="672" /></p>
+<pre class="r"><code>#For each of the five cause of death, what is the mean percent of excess death? It is different across locality.
 library(forcats)
 names(cod_data)</code></pre>
 <pre><code>##  [1] &quot;year&quot;                      &quot;cause_of_death&quot;           
@@ -329,11 +344,12 @@ names(cod_data)</code></pre>
   theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="p8105_final_project_files/figure-html/yz3306.1-1.png" width="672" /></p>
+<pre class="r"><code>##As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.</code></pre>
 <pre class="r"><code>#regress percent of excess death on cause of death, which is a categorical variable.
 #with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates 
 
-cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
-broom::tidy(cod_lm)</code></pre>
+cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
+broom::tidy(cod_lm_yz1)</code></pre>
 <pre><code>##                                              term estimate  std.error
 ## 1                                     (Intercept) 21.60686 0.08399078
 ## 2 cause_of_deathChronic Lower Respiratory Disease 21.08880 0.12091802
@@ -346,10 +362,32 @@ broom::tidy(cod_lm)</code></pre>
 ## 3  91.73246       0
 ## 4 107.26483       0
 ## 5 217.00389       0</code></pre>
-<pre class="r"><code>#Do we need to include the plot of the linear model?
-#Why is everything significant? Is there a problem?
-#How to make a scatterplot for regression with catagorical variables?
-#How to interpret percent excess death?</code></pre>
+<pre class="r"><code>#cod_lm_yz2 = lm(percent_excess_death ~locality, data = cod_data)
+#broom::tidy(cod_lm_yz2)
+
+cod_lm_yz3 = lm(percent_excess_death ~cause_of_death + locality, data = cod_data)
+broom::tidy(cod_lm_yz3)</code></pre>
+<pre><code>##                                              term  estimate  std.error
+## 1                                     (Intercept) 19.733487 0.09566546
+## 2 cause_of_deathChronic Lower Respiratory Disease 21.236141 0.11679788
+## 3                     cause_of_deathHeart Disease 10.904673 0.11474277
+## 4                            cause_of_deathStroke 13.069260 0.11636410
+## 5              cause_of_deathUnintentional Injury 25.770878 0.11470336
+## 6                            localityMetropolitan -2.035929 0.08834641
+## 7                         localityNonmetropolitan  8.148594 0.09083995
+##   statistic       p.value
+## 1 206.27598  0.000000e+00
+## 2 181.81957  0.000000e+00
+## 3  95.03582  0.000000e+00
+## 4 112.31351  0.000000e+00
+## 5 224.67413  0.000000e+00
+## 6 -23.04484 2.395346e-117
+## 7  89.70276  0.000000e+00</code></pre>
+<pre class="r"><code>#Do we need to include the plot of the linear model? Some plots. 
+#Why is everything significant? Is there a problem? Don&#39;t focus on p-value. Calculate CI and other estimates.
+#How to make a scatterplot for regression with catagorical variables? We don&#39;t need to.
+#How to interpret percent excess death? According to the benchmark of the three lowest states.
+#How to make a map? Still under investigation...</code></pre>
 </div>
 
 
