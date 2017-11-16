@@ -267,8 +267,13 @@ summary(mortality_lm)</code></pre>
 ## Multiple R-squared:  0.01821,    Adjusted R-squared:  0.0182 
 ## F-statistic:  1778 on 2 and 191745 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre class="r"><code>gp_cod_data = cod_data
-ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
+<pre class="r"><code>### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
+gp_cod_data = cod_data %&gt;%
+  mutate(percent_excess_death = as.numeric(percent_excess_death)) %&gt;%
+  group_by(locality, year)%&gt;% 
+  mutate(mean = mean(percent_excess_death)) #doesn&#39;t work. Ask TA.
+
+ggplot(gp_cod_data, aes(x = year, y = mean, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
 facet_grid(. ~ locality) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/wp2241-1.png" width="672" /></p>
 <p>=======</p>
