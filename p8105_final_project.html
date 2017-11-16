@@ -216,7 +216,8 @@ $(document).ready(function () {
   na.omit() %&gt;%
   filter(!(state == &quot;United States&quot;)) %&gt;%
   separate(., percent_potentially_excess_deaths, into = c(&quot;percent_excess_death&quot;), sep = &quot;%&quot;) %&gt;%
-  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) </code></pre>
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %&gt;%
+  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Year = col_integer(),
@@ -235,6 +236,9 @@ $(document).ready(function () {
 ## )</code></pre>
 <pre><code>## Warning: Too many values at 191748 locations: 1, 2, 3, 4, 5, 6, 7, 8, 9,
 ## 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...</code></pre>
+<pre class="r"><code>##columns removed
+
+ #&quot;state_fips_code&quot;           &quot;hhs_region&quot;                &quot;age_range&quot;    &quot;benchmark&quot;   &quot;potentially_excess_deaths&quot; &quot;percent_excess_death&quot;      &quot;mortality&quot;   </code></pre>
 <ul>
 <li>the <code>year</code> variable contains data collected from 2005-2015.</li>
 <li>filtered out <code>United States</code> in the <code>state</code> variable.</li>
@@ -278,7 +282,8 @@ summary(mortality_lm)</code></pre>
 ## Multiple R-squared:  0.01821,    Adjusted R-squared:  0.0182 
 ## F-statistic:  1778 on 2 and 191745 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre class="r"><code>gp_cod_data = cod_data
+<pre class="r"><code>### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
+gp_cod_data = cod_data
 ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
 facet_grid(. ~ locality) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/wp2241-1.png" width="672" /></p>
@@ -298,23 +303,26 @@ geom_bar(aes(fill = cause_of_death), stat = &quot;identity&quot;)</code></pre>
 library(forcats)
 names(cod_data)</code></pre>
 <pre><code>##  [1] &quot;year&quot;                      &quot;cause_of_death&quot;           
-##  [3] &quot;state&quot;                     &quot;state_fips_code&quot;          
-##  [5] &quot;hhs_region&quot;                &quot;age_range&quot;                
-##  [7] &quot;benchmark&quot;                 &quot;locality&quot;                 
-##  [9] &quot;observed_deaths&quot;           &quot;population&quot;               
-## [11] &quot;expected_deaths&quot;           &quot;potentially_excess_deaths&quot;
-## [13] &quot;percent_excess_death&quot;      &quot;mortality&quot;</code></pre>
+##  [3] &quot;state&quot;                     &quot;locality&quot;                 
+##  [5] &quot;observed_deaths&quot;           &quot;population&quot;               
+##  [7] &quot;expected_deaths&quot;           &quot;potentially_excess_deaths&quot;
+##  [9] &quot;percent_excess_death&quot;      &quot;mortality&quot;</code></pre>
 <pre class="r"><code>cod_data %&gt;%
   na.omit %&gt;%
   group_by(cause_of_death) %&gt;%
   mutate(mean_percent_excess_death = mean(percent_excess_death)) %&gt;%
   ungroup(cause_of_death) %&gt;%
   mutate(cause_of_death = fct_reorder(cause_of_death, mean_percent_excess_death)) %&gt;%
-  ggplot(aes(x = cause_of_death, y = percent_excess_death)) +
+  ggplot(aes(x = cause_of_death, y = percent_excess_death, fill = cause_of_death)) +
   geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))</code></pre>
+  facet_grid(~locality) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="p8105_final_project_files/figure-html/yz3306.1-1.png" width="672" /></p>
-<pre class="r"><code>cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
+<pre class="r"><code>#regress percent of excess death on cause of death, which is a categorical variable.
+#with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates 
+
+cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)</code></pre>
 <pre><code>##                                              term estimate  std.error
 ## 1                                     (Intercept) 21.60686 0.08399078
