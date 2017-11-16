@@ -65,6 +65,7 @@ summary(mortality_lm)
 
 <<<<<<< HEAD
 ```{r wp2241}
+### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data
 ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = "identity")+
 facet_grid(. ~ locality) 
