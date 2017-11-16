@@ -259,7 +259,7 @@ $(document).ready(function () {
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title=&quot;Locality vs. Mortality&quot;) +
   labs(x=&quot;locality&quot;, y=&quot;mortality&quot;) </code></pre>
-<p><img src="p8105_final_project_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="p8105_final_project_files/figure-html/xs2329%20boxplot-1.png" width="672" /></p>
 <pre class="r"><code>mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)</code></pre>
 <pre><code>## 
@@ -281,6 +281,7 @@ summary(mortality_lm)</code></pre>
 ## Residual standard error: 4.317 on 191745 degrees of freedom
 ## Multiple R-squared:  0.01821,    Adjusted R-squared:  0.0182 
 ## F-statistic:  1778 on 2 and 191745 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>interpretation on linear regression: We expect to see 0.22576 less deaths for every 10000 people in metropolitan region as compared to all regions. We expect to see 1.14451 more death for every 10000 people in nonmetropolitan region as compared to all regions.</p>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <pre class="r"><code>### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data

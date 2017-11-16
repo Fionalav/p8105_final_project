@@ -53,7 +53,7 @@ cod_data %>%
   labs(x="locality", y="mortality") 
 ```
 
-```{r}
+```{r xs2329 boxplot}
 cod_data %>%
   group_by(cause_of_death) %>% 
   ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
@@ -63,11 +63,14 @@ cod_data %>%
 ```
 
 
+
 ```{r xs2329 lm}
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
-
+interpretation on linear regression:
+We expect to see 0.22576 less deaths for every 10000 people in metropolitan region as compared to all regions. 
+We expect to see 1.14451 more death for every 10000 people in nonmetropolitan region as compared to all regions.
 
 <<<<<<< HEAD
 ```{r wp2241}
