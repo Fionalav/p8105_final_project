@@ -284,17 +284,11 @@ summary(mortality_lm)</code></pre>
 <p>interpretation on linear regression: We expect to see 0.22576 less deaths for every 10000 people in metropolitan region as compared to all regions. We expect to see 1.14451 more death for every 10000 people in nonmetropolitan region as compared to all regions.</p>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <pre class="r"><code>### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
-<<<<<<< HEAD
 gp_cod_data = cod_data %&gt;%
-  mutate(percent_excess_death = as.numeric(percent_excess_death)) %&gt;%
-  group_by(locality, year)%&gt;% 
-  mutate(mean = mean(percent_excess_death)) #doesn&#39;t work. Ask TA.
+  group_by(year, locality)%&gt;% 
+  summarise(mean_ped = mean(percent_excess_death)) #doesn&#39;t work. Ask TA.
 
-ggplot(gp_cod_data, aes(x = year, y = mean, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
-=======
-gp_cod_data = cod_data
-ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
->>>>>>> 8f414abb19c233e962e309d56891cbdeb2c63af3
+ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
 facet_grid(. ~ locality) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/wp2241-1.png" width="672" /></p>
 <p>=======</p>

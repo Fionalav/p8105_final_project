@@ -76,11 +76,10 @@ We expect to see 1.14451 more death for every 10000 people in nonmetropolitan re
 ```{r wp2241}
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death)) %>%
-  group_by(locality, year)%>% 
-  mutate(mean = mean(percent_excess_death)) #doesn't work. Ask TA.
+  group_by(year, locality)%>% 
+  summarise(mean_ped = mean(percent_excess_death)) #doesn't work. Ask TA.
 
-ggplot(gp_cod_data, aes(x = year, y = mean, fill = locality)) + geom_bar(stat = "identity")+
+ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_bar(stat = "identity")+
 facet_grid(. ~ locality) 
 
 
@@ -95,13 +94,30 @@ facet_grid(. ~ locality)
 =======
 <<<<<<< HEAD
 ```{r cl3664 plot}
+# average percent access death for each cause in different locality 2005-2015
 cod_datayr = cod_data
 cod_datayr%>%
-  filter(!is.na(observed_deaths),
-         state != "United States")%>%
+  group_by(cause_of_death,year, locality)%>%
+  mutate(year_percent_death=mean(percent_excess_death))%>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
+  ungroup(year, locality)%>%
+  ggplot(aes(x = year, y = year_percent_death))+
+  facet_grid(. ~locality)+
+geom_line(aes(color = cause_of_death),size = 1)+
+  theme_light()
+```
 
-  ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
-geom_bar(aes(fill = cause_of_death), stat = "identity")
+```{r cl3664 plot2}
+# mean access percent death of each cause in different locality
+cod_datayr%>%
+    group_by(cause_of_death,year, locality)%>%
+  mutate(cause_percent_death=mean(percent_excess_death))%>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
+  ungroup(year, locality)%>%
+  ggplot(aes(x = locality, y = cause_percent_death))+
+  facet_grid(. ~cause_of_death)+
+geom_boxplot(aes(fill = locality))+
+  theme_light()
 ```
 
 ```{r cl3664 lm}
