@@ -76,11 +76,10 @@ We expect to see 1.14451 more death for every 10000 people in nonmetropolitan re
 ```{r wp2241}
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
-  mutate(percent_excess_death = as.numeric(percent_excess_death)) %>%
-  group_by(locality, year)%>% 
-  mutate(mean = mean(percent_excess_death)) #doesn't work. Ask TA.
+  group_by(year, locality)%>% 
+  summarise(mean_ped = mean(percent_excess_death)) #doesn't work. Ask TA.
 
-ggplot(gp_cod_data, aes(x = year, y = mean, fill = locality)) + geom_bar(stat = "identity")+
+ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_bar(stat = "identity")+
 facet_grid(. ~ locality) 
 
 
