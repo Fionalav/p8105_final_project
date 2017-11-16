@@ -291,6 +291,12 @@ gp_cod_data = cod_data %&gt;%
 ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
 facet_grid(. ~ locality) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/wp2241-1.png" width="672" /></p>
+<pre class="r"><code>gp_locality_lm = lm(percent_excess_death ~locality, data = cod_data)
+broom::tidy(gp_locality_lm)</code></pre>
+<pre><code>##                      term  estimate  std.error statistic      p.value
+## 1             (Intercept) 33.886344 0.07132652 475.08758 0.000000e+00
+## 2    localityMetropolitan -2.060276 0.10119432 -20.35960 4.779185e-92
+## 3 localityNonmetropolitan  8.047238 0.10403428  77.35179 0.000000e+00</code></pre>
 <p>=======</p>
 <div id="head" class="section level1">
 <h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
@@ -340,6 +346,10 @@ broom::tidy(cod_lm)</code></pre>
 ## 3  91.73246       0
 ## 4 107.26483       0
 ## 5 217.00389       0</code></pre>
+<pre class="r"><code>#Do we need to include the plot of the linear model?
+#Why is everything significant? Is there a problem?
+#How to make a scatterplot for regression with catagorical variables?
+#How to interpret percent excess death?</code></pre>
 </div>
 
 
