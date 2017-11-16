@@ -211,30 +211,6 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr</code></pre>
-<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
-<pre><code>## filter(): dplyr, stats
-## lag():    dplyr, stats</code></pre>
-<pre class="r"><code>library(rvest)</code></pre>
-<pre><code>## Loading required package: xml2</code></pre>
-<pre><code>## 
-## Attaching package: &#39;rvest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     pluck</code></pre>
-<pre><code>## The following object is masked from &#39;package:readr&#39;:
-## 
-##     guess_encoding</code></pre>
-<pre class="r"><code>library(httr)
-library(janitor)
-library(stringr)
-library(readxl)</code></pre>
 <pre class="r"><code>cod_data = read_csv(&quot;./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv&quot;) %&gt;%
   clean_names() %&gt;%
   na.omit() %&gt;%
@@ -259,6 +235,8 @@ library(readxl)</code></pre>
 ## )</code></pre>
 <pre><code>## Warning: Too many values at 191748 locations: 1, 2, 3, 4, 5, 6, 7, 8, 9,
 ## 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...</code></pre>
+<p>Added a variable <code>mortality</code> which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
+<p>xs2329: This bar graph shows the distribution of cause of death within mortality in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
 <pre class="r"><code>cod_data %&gt;%
   group_by(cause_of_death) %&gt;% 
   ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
@@ -268,13 +246,43 @@ library(readxl)</code></pre>
   labs(x=&quot;locality&quot;, y=&quot;mortality&quot;) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/xs2329%20plot-1.png" width="672" /></p>
 <pre class="r"><code>mortality_lm = lm(mortality ~locality, data = cod_data)
-broom::tidy(mortality_lm)</code></pre>
-<pre><code>##                      term   estimate  std.error  statistic      p.value
-## 1             (Intercept)  4.1033134 0.01671586 245.474203 0.000000e+00
-## 2    localityMetropolitan -0.2257558 0.02371559  -9.519299 1.762686e-21
-## 3 localityNonmetropolitan  1.1445051 0.02438115  46.942205 0.000000e+00</code></pre>
+summary(mortality_lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mortality ~ locality, data = cod_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.1454 -2.9547 -1.2983  0.9988 19.8959 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)              4.10331    0.01672 245.474   &lt;2e-16 ***
+## localityMetropolitan    -0.22576    0.02372  -9.519   &lt;2e-16 ***
+## localityNonmetropolitan  1.14451    0.02438  46.942   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.317 on 191745 degrees of freedom
+## Multiple R-squared:  0.01821,    Adjusted R-squared:  0.0182 
+## F-statistic:  1778 on 2 and 191745 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre class="r"><code>gp_cod_data = cod_data
+ggplot(gp_cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_bar(stat = &quot;identity&quot;)+
+facet_grid(. ~ locality) </code></pre>
+<p><img src="p8105_final_project_files/figure-html/wp2241-1.png" width="672" /></p>
 <p>=======</p>
+<div id="head" class="section level1">
+<h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre class="r"><code>cod_datayr = cod_data
+cod_datayr%&gt;%
+  filter(!is.na(observed_deaths),
+         state != &quot;United States&quot;)%&gt;%
+
+  ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
+geom_bar(aes(fill = cause_of_death), stat = &quot;identity&quot;)</code></pre>
+<p><img src="p8105_final_project_files/figure-html/cl3664%20plot-1.png" width="672" /></p>
 <pre class="r"><code>#For each of the five cause of death, what is the mean percent of excess death?
 library(forcats)
 names(cod_data)</code></pre>
@@ -309,6 +317,7 @@ broom::tidy(cod_lm)</code></pre>
 ## 3  91.73246       0
 ## 4 107.26483       0
 ## 5 217.00389       0</code></pre>
+</div>
 
 
 

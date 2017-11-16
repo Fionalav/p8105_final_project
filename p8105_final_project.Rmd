@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load lib}
+```{r load lib, include=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
@@ -28,6 +28,13 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) 
 ```
 
+Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
+
+
+
+xs2329:
+This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. 
+
 
 ```{r xs2329 plot}
 cod_data %>%
@@ -43,6 +50,8 @@ cod_data %>%
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
+
+
 <<<<<<< HEAD
 ```{r wp2241}
 gp_cod_data = cod_data
@@ -60,24 +69,21 @@ facet_grid(. ~ locality)
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
-```{r cl3664}
+```{r cl3664 plot}
 cod_datayr = cod_data
 cod_datayr%>%
   filter(!is.na(observed_deaths),
          state != "United States")%>%
-  View()
+
   ggplot(aes(x = year, y = percent_excess_death, group = cause_of_death))+
 geom_bar(aes(fill = cause_of_death), stat = "identity")
 ```
 
-```{r cl3664}
+```{r cl3664 lm}
 
 ```
 
-=======
->>>>>>> abc73c748c35d93567d6f649e1efab53bca2e3cb
-=======
->>>>>>> 156a7fad0d8d92ed84b93df41626c41c30f01ab0
+
 ```{r yz3306.1}
 #For each of the five cause of death, what is the mean percent of excess death?
 library(forcats)
@@ -96,14 +102,6 @@ cod_data %>%
 ```{r yz3306.2}
 cod_lm = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm)
-<<<<<<< HEAD
->>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
-```
-=======
-```
-<<<<<<< HEAD
 
-=======
->>>>>>> d6c9ad62c25281a3d068f564b10f2ace46026cb4
->>>>>>> abc73c748c35d93567d6f649e1efab53bca2e3cb
->>>>>>> 156a7fad0d8d92ed84b93df41626c41c30f01ab0
+```
+
