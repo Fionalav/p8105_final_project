@@ -16,6 +16,12 @@ library(httr)
 library(janitor)
 library(stringr)
 library(readxl)
+library(plotly)
+library(dplyr)
+library(viridisLite)
+library(forecast)
+library(flexdashboard)
+
 ```
 
 
@@ -26,11 +32,11 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
   filter(!(state == "United States")) %>%
   separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
   mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
-  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality, hhs_region)
 
 ##columns removed
 
- #"state_fips_code"           "hhs_region"                "age_range"    "benchmark"   "potentially_excess_deaths" "percent_excess_death"      "mortality"   
+ #"state_fips_code"                      "age_range"    "benchmark"   "potentially_excess_deaths" "percent_excess_death"      "mortality"   
 
 ```
 - the `year` variable contains data collected from 2005-2015.
@@ -42,6 +48,20 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
 xs2329:
 This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. 
 
+```{r}
+cod_data %>% 
+  group_by(hhs_region) %>%
+  summarise(mean_ped = mean(percent_excess_death)) 
+
+if (require(maps)) {
+  states_map <- map_data("state")
+  ggplot(cod_data, aes(map_id = hhs_region)) +
+    geom_map(aes(fill = mean_ped), map = states_map) +
+    expand_limits(x = states_map$long, y = states_map$lat)
+}
+
+
+```
 
 ```{r xs2329 plot}
 cod_data %>%

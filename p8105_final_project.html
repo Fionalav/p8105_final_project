@@ -217,7 +217,7 @@ $(document).ready(function () {
   filter(!(state == &quot;United States&quot;)) %&gt;%
   separate(., percent_potentially_excess_deaths, into = c(&quot;percent_excess_death&quot;), sep = &quot;%&quot;) %&gt;%
   mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %&gt;%
-  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)</code></pre>
+  select(year, cause_of_death, state, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality, hhs_region)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Year = col_integer(),
@@ -238,13 +238,38 @@ $(document).ready(function () {
 ## 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...</code></pre>
 <pre class="r"><code>##columns removed
 
- #&quot;state_fips_code&quot;           &quot;hhs_region&quot;                &quot;age_range&quot;    &quot;benchmark&quot;   &quot;potentially_excess_deaths&quot; &quot;percent_excess_death&quot;      &quot;mortality&quot;   </code></pre>
+ #&quot;state_fips_code&quot;                      &quot;age_range&quot;    &quot;benchmark&quot;   &quot;potentially_excess_deaths&quot; &quot;percent_excess_death&quot;      &quot;mortality&quot;   </code></pre>
 <ul>
 <li>the <code>year</code> variable contains data collected from 2005-2015.</li>
 <li>filtered out <code>United States</code> in the <code>state</code> variable.</li>
 <li>Added a variable <code>mortality</code> which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</li>
 </ul>
 <p>xs2329: This bar graph shows the distribution of cause of death within mortality in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
+<pre class="r"><code>cod_data %&gt;% 
+  group_by(hhs_region) %&gt;%
+  summarise(mean_ped = mean(percent_excess_death)) </code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    hhs_region mean_ped
+##         &lt;int&gt;    &lt;dbl&gt;
+##  1          1 22.82538
+##  2          2 21.21859
+##  3          3 38.25915
+##  4          4 50.35335
+##  5          5 33.98758
+##  6          6 46.87136
+##  7          7 35.42475
+##  8          8 27.81179
+##  9          9 31.26415
+## 10         10 29.62460</code></pre>
+<pre class="r"><code>if (require(maps)) {
+  states_map &lt;- map_data(&quot;state&quot;)
+  ggplot(cod_data, aes(map_id = hhs_region)) +
+    geom_map(aes(fill = mean_ped), map = states_map) +
+    expand_limits(x = states_map$long, y = states_map$lat)
+}</code></pre>
+<pre><code>## Loading required package: maps</code></pre>
+<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called &#39;maps&#39;</code></pre>
 <pre class="r"><code>cod_data %&gt;%
   group_by(cause_of_death) %&gt;% 
   ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
@@ -331,7 +356,8 @@ names(cod_data)</code></pre>
 ##  [3] &quot;state&quot;                     &quot;locality&quot;                 
 ##  [5] &quot;observed_deaths&quot;           &quot;population&quot;               
 ##  [7] &quot;expected_deaths&quot;           &quot;potentially_excess_deaths&quot;
-##  [9] &quot;percent_excess_death&quot;      &quot;mortality&quot;</code></pre>
+##  [9] &quot;percent_excess_death&quot;      &quot;mortality&quot;                
+## [11] &quot;hhs_region&quot;</code></pre>
 <pre class="r"><code>cod_data %&gt;%
   na.omit %&gt;%
   group_by(cause_of_death) %&gt;%
@@ -383,11 +409,18 @@ broom::tidy(cod_lm_yz3)</code></pre>
 ## 5 224.67413  0.000000e+00
 ## 6 -23.04484 2.395346e-117
 ## 7  89.70276  0.000000e+00</code></pre>
+<<<<<<< HEAD
+<pre class="r"><code>#Do we need to include the plot of the linear model?
+#Why is everything significant? Is there a problem?
+#How to make a scatterplot for regression with catagorical variables?
+#How to interpret percent excess death?</code></pre>
+=======
 <pre class="r"><code>#Do we need to include the plot of the linear model? Some plots. 
 #Why is everything significant? Is there a problem? Don&#39;t focus on p-value. Calculate CI and other estimates.
 #How to make a scatterplot for regression with catagorical variables? We don&#39;t need to.
 #How to interpret percent excess death? According to the benchmark of the three lowest states.
 #How to make a map? Still under investigation...</code></pre>
+>>>>>>> 45a7f8380788be991b8a0dbae7bc6eb37e8e4f4d
 </div>
 
 
