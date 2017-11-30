@@ -245,31 +245,6 @@ $(document).ready(function () {
 <li>Added a variable <code>mortality</code> which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</li>
 </ul>
 <p>xs2329: This bar graph shows the distribution of cause of death within mortality in the three geographic regions: <code>Metropolitan</code>, <code>Nonmetropolitan</code> and <code>All</code>.</p>
-<pre class="r"><code>cod_data %&gt;% 
-  group_by(hhs_region) %&gt;%
-  summarise(mean_ped = mean(percent_excess_death)) </code></pre>
-<pre><code>## # A tibble: 10 x 2
-##    hhs_region mean_ped
-##         &lt;int&gt;    &lt;dbl&gt;
-##  1          1 22.82538
-##  2          2 21.21859
-##  3          3 38.25915
-##  4          4 50.35335
-##  5          5 33.98758
-##  6          6 46.87136
-##  7          7 35.42475
-##  8          8 27.81179
-##  9          9 31.26415
-## 10         10 29.62460</code></pre>
-<pre class="r"><code>if (require(maps)) {
-  states_map &lt;- map_data(&quot;state&quot;)
-  ggplot(cod_data, aes(map_id = hhs_region)) +
-    geom_map(aes(fill = mean_ped), map = states_map) +
-    expand_limits(x = states_map$long, y = states_map$lat)
-}</code></pre>
-<pre><code>## Loading required package: maps</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called &#39;maps&#39;</code></pre>
 <pre class="r"><code>cod_data %&gt;%
   group_by(cause_of_death) %&gt;% 
   ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
@@ -335,8 +310,8 @@ cod_datayr%&gt;%
   ungroup(year, locality)%&gt;%
   ggplot(aes(x = year, y = year_percent_death))+
   facet_grid(. ~locality)+
-geom_line(aes(color = cause_of_death),size = 1)+
-  theme_light()</code></pre>
+geom_line(aes(color = cause_of_death),size = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
 <p><img src="p8105_final_project_files/figure-html/cl3664%20plot-1.png" width="672" /></p>
 <pre class="r"><code># mean access percent death of each cause in different locality
 cod_datayr%&gt;%
@@ -346,8 +321,8 @@ cod_datayr%&gt;%
   ungroup(year, locality)%&gt;%
   ggplot(aes(x = locality, y = cause_percent_death))+
   facet_grid(. ~cause_of_death)+
-geom_boxplot(aes(fill = locality))+
-  theme_light()</code></pre>
+geom_boxplot(aes(fill = locality)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
 <p><img src="p8105_final_project_files/figure-html/cl3664%20plot2-1.png" width="672" /></p>
 <pre class="r"><code>#For each of the five cause of death, what is the mean percent of excess death? It is different across locality.
 library(forcats)
@@ -409,18 +384,28 @@ broom::tidy(cod_lm_yz3)</code></pre>
 ## 5 224.67413  0.000000e+00
 ## 6 -23.04484 2.395346e-117
 ## 7  89.70276  0.000000e+00</code></pre>
-<<<<<<< HEAD
-<pre class="r"><code>#Do we need to include the plot of the linear model?
-#Why is everything significant? Is there a problem?
-#How to make a scatterplot for regression with catagorical variables?
-#How to interpret percent excess death?</code></pre>
-=======
 <pre class="r"><code>#Do we need to include the plot of the linear model? Some plots. 
 #Why is everything significant? Is there a problem? Don&#39;t focus on p-value. Calculate CI and other estimates.
 #How to make a scatterplot for regression with catagorical variables? We don&#39;t need to.
 #How to interpret percent excess death? According to the benchmark of the three lowest states.
 #How to make a map? Still under investigation...</code></pre>
->>>>>>> 45a7f8380788be991b8a0dbae7bc6eb37e8e4f4d
+<pre class="r"><code>map_cod_data = cod_data%&gt;%
+  filter(locality == &quot;Metropolitan&quot;) %&gt;% 
+  select(state, locality, percent_excess_death) %&gt;% 
+  group_by(state) %&gt;% 
+  summarise(mean_ped = mean(percent_excess_death)) 
+
+df &lt;- as_data_frame(list(state = unique(fifty_states$id), rate = unique(map_cod_data$mean_ped)))
+
+ggplot(df, aes(map_id = state)) + 
+  geom_map(aes(fill = rate), map = fifty_states) + 
+  expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;) +
+  theme(panel.background = element_blank(), 
+        axis.text.x = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks = element_blank())</code></pre>
+<p><img src="p8105_final_project_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 
 

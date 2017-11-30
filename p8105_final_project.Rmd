@@ -21,6 +21,7 @@ library(dplyr)
 library(viridisLite)
 library(forecast)
 library(flexdashboard)
+library(fiftystater)
 
 ```
 
@@ -47,21 +48,6 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
 
 xs2329:
 This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. 
-
-```{r}
-cod_data %>% 
-  group_by(hhs_region) %>%
-  summarise(mean_ped = mean(percent_excess_death)) 
-
-if (require(maps)) {
-  states_map <- map_data("state")
-  ggplot(cod_data, aes(map_id = hhs_region)) +
-    geom_map(aes(fill = mean_ped), map = states_map) +
-    expand_limits(x = states_map$long, y = states_map$lat)
-}
-
-
-```
 
 ```{r xs2329 plot}
 cod_data %>%
@@ -186,5 +172,24 @@ broom::tidy(cod_lm_yz3)
 #How to make a scatterplot for regression with catagorical variables? We don't need to.
 #How to interpret percent excess death? According to the benchmark of the three lowest states.
 #How to make a map? Still under investigation...
+```
+
+```{r}
+map_cod_data = cod_data%>%
+  filter(locality == "Metropolitan") %>% 
+  select(state, locality, percent_excess_death) %>% 
+  group_by(state) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) 
+
+df <- as_data_frame(list(state = unique(fifty_states$id), rate = unique(map_cod_data$mean_ped)))
+
+ggplot(df, aes(map_id = state)) + 
+  geom_map(aes(fill = rate), map = fifty_states) + 
+  expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+  labs(x = "", y = "") +
+  theme(panel.background = element_blank(), 
+        axis.text.x = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks = element_blank())
 ```
 
