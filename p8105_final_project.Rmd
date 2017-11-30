@@ -160,6 +160,7 @@ broom::tidy(cod_lm_yz1)
 cod_lm_yz3 = lm(percent_excess_death ~cause_of_death + locality, data = cod_data)
 broom::tidy(cod_lm_yz3)
 ```
+
 ```{r Questions}
 #Do we need to include the plot of the linear model? Some plots. 
 #Why is everything significant? Is there a problem? Don't focus on p-value. Calculate CI and other estimates.
