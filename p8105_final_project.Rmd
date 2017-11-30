@@ -178,29 +178,27 @@ broom::tidy(cod_lm_yz3)
 ```
 
 ```{r}
-<<<<<<< HEAD
 map_cod_data = cod_data%>%
   filter(locality == "Metropolitan") %>% 
   select(state, locality, percent_excess_death) %>% 
   group_by(state) %>% 
   summarise(mean_ped = mean(percent_excess_death)) 
 
-df <- as_data_frame(list(state = unique(fifty_states$id), rate = unique(map_cod_data$mean_ped)))
-=======
-install.packages("fiftystater")
-library(fiftystater)
-library(tidyverse)
+map = as.tibble(fifty_states) %>%
+  group_by(id) %>% 
+  summarize(clong = mean(long), clat = mean(lat))
+                   
+                   
+df <- cbind(map, rate = unique(map_cod_data$mean_ped))
 
-df <- as_data_frame(list(state = unique(fifty_states$id), rate = runif(51)))
->>>>>>> 73eff5e0c1021160052d0b2b1a58cefd968b66ec
-
-ggplot(df, aes(map_id = state)) + 
+ggplot(df, aes(map_id = id)) + 
   geom_map(aes(fill = rate), map = fifty_states) + 
   expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
   labs(x = "", y = "") +
   theme(panel.background = element_blank(), 
         axis.text.x = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks = element_blank())
+        axis.ticks = element_blank()) +
+  geom_text(aes(x = clong, y = clat, label = id))
 ```
 
