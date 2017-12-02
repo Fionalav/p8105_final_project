@@ -102,36 +102,42 @@ broom::tidy(gp_locality_lm)
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+
+```{r cl3664 data}
+# How should we help nonmetropolitan areas improve public health? 
+cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
+  clean_names() %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+```
+average percent access death for each cause in different locality 2005-2015
 ```{r cl3664 plot}
-# average percent access death for each cause in different locality 2005-2015
-cod_datayr = cod_data
-cod_datayr%>%
+cod_datayr2%>%
+  filter(benchmark == "2010 Fixed")%>%
   group_by(cause_of_death,year, locality)%>%
   mutate(year_percent_death=mean(percent_excess_death))%>%
   distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
   ungroup(year, locality)%>%
   ggplot(aes(x = year, y = year_percent_death))+
-  facet_grid(. ~locality)+
-geom_line(aes(color = cause_of_death),size = 1) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
+  geom_line(aes(color = cause_of_death),size = 1) +
+  facet_grid(.~locality)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "Average yearly percent deaths for different locality and benchmarks") 
 
-```{r cl3664 plot2}
-# mean access percent death of each cause in different locality
-cod_datayr%>%
-    group_by(cause_of_death,year, locality)%>%
-  mutate(cause_percent_death=mean(percent_excess_death))%>%
-  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
-  ungroup(year, locality)%>%
-  ggplot(aes(x = locality, y = cause_percent_death))+
-  facet_grid(. ~cause_of_death)+
-geom_boxplot(aes(fill = locality)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r cl3664 lm}
-
+cod_datayrlm = cod_datayr2%>%
+  filter(locality == "Nonmetropolitan",
+         benchmark == "2010 Fixed")
+lmpop = lm(data=cod_datayrlm, percent_excess_death~year+cause_of_death)
+summary(lmpop)
 ```
+
+Based on 2010 fixed benchmark, unintentional injury and chronic lower respiratory disease has on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts. 
 
 
 ```{r yz3306.1}
