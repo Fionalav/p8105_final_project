@@ -301,29 +301,80 @@ broom::tidy(gp_locality_lm)</code></pre>
 <div id="head" class="section level1">
 <h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre class="r"><code># average percent access death for each cause in different locality 2005-2015
-cod_datayr = cod_data
-cod_datayr%&gt;%
+<pre class="r"><code># How should we help nonmetropolitan areas improve public health? 
+cod_datayr2 = read_csv(&quot;./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv&quot;) %&gt;%
+  clean_names() %&gt;%
+  na.omit() %&gt;%
+  filter(!(state == &quot;United States&quot;)) %&gt;%
+  separate(., percent_potentially_excess_deaths, into = c(&quot;percent_excess_death&quot;), sep = &quot;%&quot;) %&gt;%
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %&gt;%
+  select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Year = col_integer(),
+##   `Cause of Death` = col_character(),
+##   State = col_character(),
+##   `State FIPS Code` = col_character(),
+##   `HHS Region` = col_integer(),
+##   `Age Range` = col_character(),
+##   Benchmark = col_character(),
+##   Locality = col_character(),
+##   `Observed Deaths` = col_integer(),
+##   Population = col_integer(),
+##   `Expected Deaths` = col_integer(),
+##   `Potentially Excess Deaths` = col_integer(),
+##   `Percent Potentially Excess Deaths` = col_character()
+## )</code></pre>
+<pre><code>## Warning: Too many values at 191748 locations: 1, 2, 3, 4, 5, 6, 7, 8, 9,
+## 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...</code></pre>
+<p>average percent access death for each cause in different locality 2005-2015</p>
+<pre class="r"><code>cod_datayr2%&gt;%
+  filter(benchmark == &quot;2010 Fixed&quot;)%&gt;%
   group_by(cause_of_death,year, locality)%&gt;%
   mutate(year_percent_death=mean(percent_excess_death))%&gt;%
   distinct(year, cause_of_death, locality, .keep_all = TRUE)%&gt;%
   ungroup(year, locality)%&gt;%
   ggplot(aes(x = year, y = year_percent_death))+
-  facet_grid(. ~locality)+
-geom_line(aes(color = cause_of_death),size = 1) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+  geom_line(aes(color = cause_of_death),size = 1) +
+  facet_grid(.~locality)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = &quot;Average yearly percent deaths for different locality and benchmarks&quot;) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/cl3664%20plot-1.png" width="672" /></p>
-<pre class="r"><code># mean access percent death of each cause in different locality
-cod_datayr%&gt;%
-    group_by(cause_of_death,year, locality)%&gt;%
-  mutate(cause_percent_death=mean(percent_excess_death))%&gt;%
-  distinct(year, cause_of_death, locality, .keep_all = TRUE)%&gt;%
-  ungroup(year, locality)%&gt;%
-  ggplot(aes(x = locality, y = cause_percent_death))+
-  facet_grid(. ~cause_of_death)+
-geom_boxplot(aes(fill = locality)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="p8105_final_project_files/figure-html/cl3664%20plot2-1.png" width="672" /></p>
+<pre class="r"><code>cod_datayrlm = cod_datayr2%&gt;%
+  filter(locality == &quot;Nonmetropolitan&quot;,
+         benchmark == &quot;2010 Fixed&quot;)
+lmpop = lm(data=cod_datayrlm, percent_excess_death~year+cause_of_death)
+summary(lmpop)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = percent_excess_death ~ year + cause_of_death, data = cod_datayrlm)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -55.456  -9.828   0.576  10.404  39.489 
+## 
+## Coefficients:
+##                                                  Estimate Std. Error
+## (Intercept)                                     769.06335   67.48938
+## year                                             -0.36941    0.03358
+## cause_of_deathChronic Lower Respiratory Disease  27.06490    0.33901
+## cause_of_deathHeart Disease                      13.90257    0.32844
+## cause_of_deathStroke                             12.91441    0.33784
+## cause_of_deathUnintentional Injury               31.18470    0.32812
+##                                                 t value Pr(&gt;|t|)    
+## (Intercept)                                       11.39   &lt;2e-16 ***
+## year                                             -11.00   &lt;2e-16 ***
+## cause_of_deathChronic Lower Respiratory Disease   79.83   &lt;2e-16 ***
+## cause_of_deathHeart Disease                       42.33   &lt;2e-16 ***
+## cause_of_deathStroke                              38.23   &lt;2e-16 ***
+## cause_of_deathUnintentional Injury                95.04   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 14.92 on 19718 degrees of freedom
+## Multiple R-squared:  0.365,  Adjusted R-squared:  0.3649 
+## F-statistic:  2267 on 5 and 19718 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Based on 2010 fixed benchmark, unintentional injury and chronic lower respiratory disease has on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.</p>
 <pre class="r"><code>#For each of the five cause of death, what is the mean percent of excess death? It is different across locality.
 library(forcats)
 names(cod_data)</code></pre>
@@ -388,28 +439,30 @@ broom::tidy(cod_lm_yz3)</code></pre>
 #How to make a scatterplot for regression with catagorical variables? We don&#39;t need to.
 #How to interpret percent excess death? According to the benchmark of the three lowest states.
 #How to make a map? Still under investigation...</code></pre>
-<pre class="r"><code>map_cod_data = cod_data%&gt;%
-  filter(locality == &quot;Metropolitan&quot;) %&gt;% 
+<pre class="r"><code>map_cod_data = cod_data %&gt;%
+  filter(locality == &quot;Metropolitan&quot;) %&gt;%
   select(state, locality, percent_excess_death) %&gt;% 
   group_by(state) %&gt;% 
-  summarise(mean_ped = mean(percent_excess_death)) 
+  summarise(mean_ped = mean(percent_excess_death)) %&gt;% 
+  dplyr::filter(!(state == &quot;District of\nColumbia&quot;))
+  
 
 map = as.tibble(fifty_states) %&gt;%
   group_by(id) %&gt;% 
-  summarize(clong = mean(long), clat = mean(lat))
-                   
-                   
-df &lt;- cbind(map, rate = unique(map_cod_data$mean_ped))
+  summarize(clong = mean(long), clat = mean(lat)) %&gt;% 
+  filter(!(id == &quot;district of columbia&quot;))
+
+df &lt;- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
 
 ggplot(df, aes(map_id = id)) + 
-  geom_map(aes(fill = rate), map = fifty_states) + 
-  expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
-  labs(x = &quot;&quot;, y = &quot;&quot;) +
-  theme(panel.background = element_blank(), 
-        axis.text.x = element_blank(), 
-        axis.text.y = element_blank(), 
-        axis.ticks = element_blank()) +
-  geom_text(aes(x = clong, y = clat, label = id))</code></pre>
+    geom_map(aes(fill = rate), map = fifty_states) + 
+    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+    labs(x = &quot;&quot;, y = &quot;&quot;) +
+    theme(panel.background = element_blank(), 
+          axis.text.x = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.ticks = element_blank()) + 
+    geom_text(aes(x = clong, y = clat, label = state.abb)) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 
