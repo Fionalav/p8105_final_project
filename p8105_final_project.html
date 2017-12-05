@@ -464,6 +464,219 @@ ggplot(df, aes(map_id = id)) +
           axis.ticks = element_blank()) + 
     geom_text(aes(x = clong, y = clat, label = state.abb)) </code></pre>
 <p><img src="p8105_final_project_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent)) +
+  geom_point(aes(size = pop, frame = year, ids = country)) +
+  scale_x_log10()</code></pre>
+<pre><code>## Warning: Ignoring unknown aesthetics: frame, ids</code></pre>
+<pre class="r"><code>p &lt;- ggplotly(p) %&gt;% 
+  animation_opts(
+    1000, easing = &quot;elastic&quot;, redraw = FALSE
+  ) %&gt;% 
+  animation_button(
+    x = 1, xanchor = &quot;right&quot;, y = 0, yanchor = &quot;bottom&quot;
+  ) %&gt;%
+  animation_slider(
+    currentvalue = list(prefix = &quot;YEAR &quot;, font = list(color=&quot;red&quot;))
+  )</code></pre>
+<pre><code>## We recommend that you use the dev version of ggplot2 with `ggplotly()`
+## Install it with: `devtools::install_github(&#39;hadley/ggplot2&#39;)`</code></pre>
+<pre class="r"><code>region_cod_data = cod_data %&gt;%
+  select(state, locality, hhs_region, percent_excess_death) %&gt;% 
+  group_by(state,locality, hhs_region) %&gt;% 
+  summarise(mean_ped = mean(percent_excess_death)) %&gt;% 
+  dplyr::filter(!(state == &quot;District of\nColumbia&quot;)) %&gt;% 
+  mutate(hhs_region = as.character(hhs_region))
+
+
+region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
+rl1 = broom::tidy(region_lm)
+kable(rl1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">22.897478</td>
+<td align="right">2.124541</td>
+<td align="right">10.777612</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region10</td>
+<td align="right">6.919893</td>
+<td align="right">3.302733</td>
+<td align="right">2.095202</td>
+<td align="right">0.0379936</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region2</td>
+<td align="right">-1.678888</td>
+<td align="right">4.456475</td>
+<td align="right">-0.376730</td>
+<td align="right">0.7069571</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region3</td>
+<td align="right">15.028044</td>
+<td align="right">3.161418</td>
+<td align="right">4.753577</td>
+<td align="right">0.0000050</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region4</td>
+<td align="right">27.459220</td>
+<td align="right">2.776844</td>
+<td align="right">9.888645</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region5</td>
+<td align="right">11.065534</td>
+<td align="right">2.962531</td>
+<td align="right">3.735162</td>
+<td align="right">0.0002743</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region6</td>
+<td align="right">23.938689</td>
+<td align="right">3.103091</td>
+<td align="right">7.714466</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region7</td>
+<td align="right">12.500192</td>
+<td align="right">3.302733</td>
+<td align="right">3.784802</td>
+<td align="right">0.0002292</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region8</td>
+<td align="right">5.138616</td>
+<td align="right">2.962531</td>
+<td align="right">1.734536</td>
+<td align="right">0.0850722</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region9</td>
+<td align="right">8.502314</td>
+<td align="right">3.302733</td>
+<td align="right">2.574327</td>
+<td align="right">0.0111054</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>region_locality_lm =lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
+rl2 = broom::tidy(region_locality_lm)
+kable(rl2)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">21.518530</td>
+<td align="right">2.080719</td>
+<td align="right">10.3418699</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region10</td>
+<td align="right">6.592074</td>
+<td align="right">2.933587</td>
+<td align="right">2.2471039</td>
+<td align="right">0.0262563</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region2</td>
+<td align="right">-0.892122</td>
+<td align="right">3.959828</td>
+<td align="right">-0.2252931</td>
+<td align="right">0.8220919</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region3</td>
+<td align="right">15.098291</td>
+<td align="right">2.807614</td>
+<td align="right">5.3776243</td>
+<td align="right">0.0000003</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region4</td>
+<td align="right">27.131401</td>
+<td align="right">2.466649</td>
+<td align="right">10.9992936</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region5</td>
+<td align="right">10.737714</td>
+<td align="right">2.631517</td>
+<td align="right">4.0804272</td>
+<td align="right">0.0000765</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region6</td>
+<td align="right">23.610869</td>
+<td align="right">2.756320</td>
+<td align="right">8.5660831</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region7</td>
+<td align="right">12.172373</td>
+<td align="right">2.933587</td>
+<td align="right">4.1493141</td>
+<td align="right">0.0000587</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$hhs_region8</td>
+<td align="right">4.810797</td>
+<td align="right">2.631517</td>
+<td align="right">1.8281458</td>
+<td align="right">0.0697354</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$hhs_region9</td>
+<td align="right">8.174495</td>
+<td align="right">2.933587</td>
+<td align="right">2.7865190</td>
+<td align="right">0.0060956</td>
+</tr>
+<tr class="odd">
+<td align="left">region_cod_data$localityMetropolitan</td>
+<td align="right">-2.159388</td>
+<td align="right">1.555863</td>
+<td align="right">-1.3879042</td>
+<td align="right">0.1674526</td>
+</tr>
+<tr class="even">
+<td align="left">region_cod_data$localityNonmetropolitan</td>
+<td align="right">7.279690</td>
+<td align="right">1.582741</td>
+<td align="right">4.5994187</td>
+<td align="right">0.0000096</td>
+</tr>
+</tbody>
+</table>
+<p>Interpretation: U.S. Department of Health and Human Services public health regions (1 through 10) are used as a categorical variable in the above regressions. Specific region classification is shown in the figure below.</p>
+<p>[attach image here].</p>
+<p>As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.</p>
 </div>
 
 
