@@ -9,11 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="chianti shi" />
 
-<meta name="date" content="2017-11-16" />
 
-<title>p8105_hw6_xs2329</title>
+<title>Rural-Urban Disparities in Five Leading Causes of Mortality in the United States</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -33,10 +31,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -174,7 +174,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Home</a>
+      <a class="navbar-brand" href="index.html">P8105 Final Project</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -185,13 +185,7 @@ $(document).ready(function () {
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="mailto:&lt;you@youremail.com&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="http://github.com/&lt;YOUR_GH_NAME&gt;/">
+  <a href="https://github.com/Fionalav/p8105_final_project">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -205,15 +199,53 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">p8105_hw6_xs2329</h1>
-<h4 class="author"><em>chianti shi</em></h4>
-<h4 class="date"><em>11/16/2017</em></h4>
+<h1 class="title toc-ignore">Rural-Urban Disparities in Five Leading Causes of Mortality in the United States</h1>
+<h3 class="subtitle"><em>Data Science Final Project</em></h3>
 
 </div>
 
 
-<p>In this assignment, I worked with Yulan Zhang (yz3306).</p>
-<p>A link to to the website produced in Problem 3 can be found here <a href="https://fionalav.github.io/p8105_hw6_website/">here</a>.</p>
+<pre class="include"><code>Webpage and screencast
+
+You will create a webpage summarizing your project. This should not be as detailed as your submitted R Markdown and HTML files, but should give a overview of the project scope, data, approaches, visualizations, and other results. You should include a link to the GitHub repository containing your R Markdown document.
+
+You will also create a two-minute narrated screencast illustrating your project (screencasts are videos of your computer screen with spoken audio explaining what is shown on the screen – see the RStudio webinar page for some examples). You may use slides, demonstrations, or any other content that is relevant to your project. Publish your screencast on youtube, vimeo, or another online platform, and embed the screencast in your website. The two-minute limit will be strictly enforced.
+
+For both the website and the screencast, your audience is classmates who worked on other projects. It will be helpful to put yourself in their shoes, and ask what information you think will be most interesting. We suggest you emphasize motivation, questions, and results over methods; after all, interested folks can view your complete project on GitHub.</code></pre>
+<div id="introduction-and-motivation" class="section level2">
+<h2>Introduction and Motivation</h2>
+<p>The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke.</p>
+</div>
+<div id="data-descriptions" class="section level2">
+<h2>Data Descriptions</h2>
+<ul>
+<li>Version of data used for analysis is <a href="https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD">Here</a>.<br />
+</li>
+</ul>
+</div>
+<div id="approaches" class="section level2">
+<h2>Approaches</h2>
+<ul>
+<li><p>From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas.</p></li>
+<li><p>We then analyzed several factors that might influence the rural-urban difference in potentially excess deaths from the five leading causes, many of which are associated with sociodemographic and ecological differences between rural and urban areas.</p></li>
+<li><p>Through statistical analysis, our report provides an interactive and straightforward view on the potentially excess deaths from the five leading causes of death in non-metropolitan and metropolitan areas.</p></li>
+<li><p>The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.</p></li>
+</ul>
+</div>
+<div id="visualizations" class="section level2">
+<h2>Visualizations</h2>
+<p>Link to the Dashboard for this project is <a href="">Here</a>.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<ul>
+<li>Link to the GitHub repository containing R Markdown document for this project is <a href="https://github.com/Fionalav/p8105_final_project">Here</a>.</li>
+<li>Link to the Screencast for this project is <a href="">Here</a>.</li>
+</ul>
+</div>
 
 
 

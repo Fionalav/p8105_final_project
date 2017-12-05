@@ -22,7 +22,7 @@ library(viridisLite)
 library(forecast)
 library(flexdashboard)
 library(fiftystater)
-
+library(RColorBrewer)
 ```
 
 
@@ -186,27 +186,29 @@ broom::tidy(cod_lm_yz3)
 ```
 
 ```{r}
-map_cod_data = cod_data%>%
-  filter(locality == "Metropolitan") %>% 
+map_cod_data = cod_data %>%
+  filter(locality == "Metropolitan") %>%
   select(state, locality, percent_excess_death) %>% 
   group_by(state) %>% 
-  summarise(mean_ped = mean(percent_excess_death)) 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  dplyr::filter(!(state == "District of\nColumbia"))
+  
 
 map = as.tibble(fifty_states) %>%
   group_by(id) %>% 
-  summarize(clong = mean(long), clat = mean(lat))
-                   
-                   
-df <- cbind(map, rate = unique(map_cod_data$mean_ped))
+  summarize(clong = mean(long), clat = mean(lat)) %>% 
+  filter(!(id == "district of columbia"))
+
+df <- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
 
 ggplot(df, aes(map_id = id)) + 
-  geom_map(aes(fill = rate), map = fifty_states) + 
-  expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
-  labs(x = "", y = "") +
-  theme(panel.background = element_blank(), 
-        axis.text.x = element_blank(), 
-        axis.text.y = element_blank(), 
-        axis.ticks = element_blank()) +
-  geom_text(aes(x = clong, y = clat, label = id))
+    geom_map(aes(fill = rate), map = fifty_states) + 
+    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+    labs(x = "", y = "") +
+    theme(panel.background = element_blank(), 
+          axis.text.x = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.ticks = element_blank()) + 
+    geom_text(aes(x = clong, y = clat, label = state.abb)) 
 ```
 
