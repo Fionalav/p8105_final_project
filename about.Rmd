@@ -1,9 +1,19 @@
----
-title: "About"
----
-
 ### About this site
 
-Sometimes you need to say a bit about the site -- how it was made, where it's hosted, where the source code can be found. 
+This site gives introduction and information on a Data Science Final Project for Course P8105 at Mailman School of Public Health, Columbia Univeristy Medical Center.\
 
-If this is for a project or analysis, I recommend giving some details about the R package versions that you used to create the content.
+Collaborators for this project:\
+Chen Li (cl3664)\
+Weixin Peng (wp2241)\
+Xiangyu Shi (xs2329)\
+Yulan Zhang (yz3306)\
+
+\newline
+
+
+###Additional Links
+
+* Detailed Background and Introduction to the Data can be accessed [Here](https://catalog.data.gov/dataset/nchs-potentially-excess-deaths-from-the-five-leading-causes-of-death).\
+* Interesting Visulizations from CDC, National Center for Health Statistics, *Data Visualiztion Gallery* is [Here](https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/).\
+* Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
+

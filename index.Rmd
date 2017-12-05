@@ -1,7 +1,41 @@
 ---
-title: "Holy cow!"
+title: Rural-Urban Disparities in Five Leading Causes of Mortality in the United States
+subtitle: Data Science Final Project
 ---
 
-### I have a webpage!
 
-And I can put all kinds of stuff on it!
+```{include = F}
+Webpage and screencast
+
+You will create a webpage summarizing your project. This should not be as detailed as your submitted R Markdown and HTML files, but should give a overview of the project scope, data, approaches, visualizations, and other results. You should include a link to the GitHub repository containing your R Markdown document.
+
+You will also create a two-minute narrated screencast illustrating your project (screencasts are videos of your computer screen with spoken audio explaining what is shown on the screen – see the RStudio webinar page for some examples). You may use slides, demonstrations, or any other content that is relevant to your project. Publish your screencast on youtube, vimeo, or another online platform, and embed the screencast in your website. The two-minute limit will be strictly enforced.
+
+For both the website and the screencast, your audience is classmates who worked on other projects. It will be helpful to put yourself in their shoes, and ask what information you think will be most interesting. We suggest you emphasize motivation, questions, and results over methods; after all, interested folks can view your complete project on GitHub.
+```
+
+
+## Introduction and Motivation
+The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. 
+
+## Data Descriptions
+
+* Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
+
+## Approaches
+* From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas. 
+
+* We then analyzed several factors that might influence the rural-urban difference in potentially excess deaths from the five leading causes, many of which are associated with sociodemographic and ecological differences between rural and urban areas. 
+
+* Through statistical analysis, our report provides an interactive and straightforward view on the potentially excess deaths from the five leading causes of death in non-metropolitan and metropolitan areas. 
+
+* The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.
+
+## Visualizations
+Link to the Dashboard for this project is [Here]().
+
+## Conclusion
+
+## Notes
+* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
+* Link to the Screencast for this project is [Here]().
