@@ -93,8 +93,10 @@ facet_grid(. ~ locality)
 ```{r wp2241 reg}
 gp_locality_lm = lm(percent_excess_death ~locality, data = cod_data)
 broom::tidy(gp_locality_lm)
+ggplot(cod_data, aes(x = year, y = percent_excess_death, fill = locality)) + geom_smooth() + geom_point(stat = "identity")
 ```
 
+The regression model is percent_excess_death = 33.89 - 2.06*Metropolitan + 8.047Nonmetropolitsn. For people in metropolitan, the expected percent excess death has a decrease of 2.06. For people in non-metropolitan aream the expected percent excess death has an increase of 8.047. The p-values show these predictors are both significant. The small p-value might due to the large sample size. 
 
 =======
 
