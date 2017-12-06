@@ -46,14 +46,15 @@ The five leading causes of death in the United States from 1999 to 2014 are canc
 * The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.
 
 ## Visualizations
-Link to the Dashboard for this project is [Here]().
+* Link to the Dashboard for this project is [Here]().
+* Link to the Shiny Dashboard for this project is [Here](https://fionalav.shinyapps.io/Final_prject_shiny/).
 
 ## Conclusion
 
 ## Notes
 * Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
 * Link to the Screencast for this project is [Here]().
-
+* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).
 
 ```{r load data}
 cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
@@ -188,13 +189,17 @@ cod_datayr2 %>%
   mutate(year_percent_death=mean(percent_excess_death))%>%
   distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
   ungroup(year, locality)%>%
-  ggplot(aes(x = year, y = year_percent_death))+
-  geom_line(aes(color = cause_of_death),size = 1) +
+ggplot(aes(x = year, y = year_percent_death, color = cause_of_death))+
+  geom_point(size = 1)+
+  geom_line(size = 1) +
   facet_grid(.~locality)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  labs(title = "Average yearly percent deaths for different locality and benchmarks") 
+  scale_x_continuous( breaks=seq(2005,2015,1))+
+  labs(title = "Average yearly excess death percentage for different locality")
 
 ```
+
+Interpretation: As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
 
 ```{r cl3664 lm}
 cod_datayrlm = cod_datayr2 %>%
@@ -204,13 +209,13 @@ lmpop = lm(data=cod_datayrlm, percent_excess_death~year+cause_of_death)
 summary(lmpop)
 ```
 
-Based on 2010 fixed benchmark, unintentional injury and chronic lower respiratory disease has on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts. 
+From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the  excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
 
+### Relationship between Mean Percentage of Excess Death and Five Leading Cause of Death
 
+**For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
+yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
 ```{r yz3306.1}
-#For each of the five cause of death, what is the mean percent of excess death? It is different across locality.
-library(forcats)
-names(cod_data)
 cod_data %>%
   na.omit %>%
   group_by(cause_of_death) %>%
@@ -223,23 +228,18 @@ cod_data %>%
   theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
   theme(legend.position = "bottom")
 
-##As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
 ```
 
-yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
-
-yz3306:regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
+yz3306:Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
 
 ```{r yz3306.2}
-
 cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm_yz1)
+```
 
-#cod_lm_yz2 = lm(percent_excess_death ~locality, data = cod_data)
-#broom::tidy(cod_lm_yz2)
+```{r yz3306.3}
+#PLOTLY
 
-cod_lm_yz3 = lm(percent_excess_death ~cause_of_death + locality, data = cod_data)
-broom::tidy(cod_lm_yz3)
 ```
 
 
