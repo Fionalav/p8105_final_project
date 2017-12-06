@@ -134,29 +134,21 @@ p
 
 
 #### Descriptive Analysis
-```{r xs2329 plot,  message=FALSE}
-cod_data %>%
-  group_by(cause_of_death) %>% 
-  ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
-  geom_col() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title="Locality vs. Mortality") +
-  labs(x="locality", y="mortality") 
-
-```
-
-This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. We observe that the weight of each composition of cuases of death is the same regardless of the locality. Nonmetropolitan area seems to have the highest mortaility, the number of deathes observed in every 10000 people.
 
 ```{r xs2329 boxplot,  message=FALSE}
 cod_data %>%
+  mutate(cause_of_death = fct_reorder(cause_of_death, mortality)) %>% 
   group_by(cause_of_death) %>% 
-  ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
+  ggplot(aes(x = cause_of_death, y = mortality, color = cause_of_death)) +
+  geom_boxplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title="Locality vs. Mortality") +
-  labs(x="locality", y="mortality") 
+  labs(x="Locality", y="Mortality") +
+  facet_grid(~locality)
+
 ```
 
-We observe that the median of mortaility is the highest among all 5 causes of death, followed by heart disease, unintentional injury, heart disease, chronic lowee respiratory disease and stroke. This pattern remains consistant when we subdivide locaility into metropolitan region and nonmetrpolitan region, which is identical to our previous finding. All 5 cuases of death are right skewed regardless of the locality. 
+This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. We observe that the rank in causes of death is the same regardless of the locality. Nonmetropolitan area seems to have the highest mortaility, the number of deathes observed in every 10000 people. We observe that the median of mortaility of Cancer is the highest among all 5 causes of death, followed by heart disease, unintentional injury, heart disease, chronic lowee respiratory disease and stroke. All 5 causes of death are right skewed regardless of the locality. 
 
 
 
