@@ -168,6 +168,9 @@ kable(rl3)
 
 ##### Map
 
+Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
+
+
 ```{r,  message=FALSE}
 map_cod_data = cod_data %>%
   filter(locality == "Metropolitan") %>%
@@ -198,10 +201,10 @@ ggplot(df, aes(map_id = id)) +
 
 ```
 
-Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
+
+If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
 
 <img src="./image/poverty_rate.png" style="width:75%">\
-If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
 
 
 ### Mean Percent Excess Death vs. Locality
