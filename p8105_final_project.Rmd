@@ -2,14 +2,19 @@
 title: "p8105_final_project"
 author: "Yulan Zhang"
 date: "November 2, 2017"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+```{r set-up and loading packages, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.width = 8,
+  fig.asp = .6,
+  out.width = "90%"
+)
 
-```{r load lib, include=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
@@ -27,6 +32,8 @@ library(broom)
 library(knitr)
 library(gapminder)
 library(forcats)
+theme_set(theme_bw())
+theme_update(legend.position = "bottom")
 
 ```
 
@@ -48,7 +55,7 @@ The five leading causes of death in the United States from 1999 to 2014 are canc
 
 ## Analysis and Visualizations
 ### Loading Data 
-```{r load data}
+```{r load data,  message=FALSE}
 cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
   clean_names() %>%
   na.omit() %>%
@@ -67,7 +74,7 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
 * Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
 
-```{r region data}
+```{r region data,  message=FALSE}
 region_cod_data = cod_data %>%
   select(state, locality, hhs_region, percent_excess_death) %>% 
   group_by(state,locality, hhs_region) %>% 
@@ -93,7 +100,7 @@ As shown in the above summary tables, with respect to region 1, only region 2 ha
 
 ### Locality vs. Mortality
 #### An Overview of the Data
-```{r xs2329}
+```{r xs2329,  message=FALSE}
 cod_data %>%
   mutate(year = as.factor(year))
 p <- cod_data %>%
@@ -114,7 +121,7 @@ p
 ```
 
 #### Discriptive Analysis
-```{r xs2329 plot}
+```{r xs2329 plot,  message=FALSE}
 cod_data %>%
   group_by(cause_of_death) %>% 
   ggplot(aes(x = locality, y = mortality, fill = cause_of_death)) +
@@ -129,7 +136,7 @@ This bar graph shows the distribution of cause of death within mortality in the 
 
 
 
-```{r xs2329 boxplot}
+```{r xs2329 boxplot,  message=FALSE}
 cod_data %>%
   group_by(cause_of_death) %>% 
   ggplot(aes(x = locality, y = mortality)) + geom_boxplot(aes(color = cause_of_death), na.rm = T) +
@@ -143,7 +150,7 @@ We observe that the median of mortaility is the highest among all 5 causes of de
 
 
 #### Linear Model
-```{r xs2329 lm}
+```{r xs2329 lm,  message=FALSE}
 mortality_lm = lm(mortality ~locality, data = cod_data)
 summary(mortality_lm)
 ```
@@ -160,7 +167,7 @@ We expect to see 1.14451 more death for every 10000 people in the nonmetropolita
 
 ### Mean Percent Excess Death vs. Locality
 
-```{r wp2241}
+```{r wp2241,  message=FALSE}
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
   group_by(year, locality) %>% 
@@ -190,7 +197,7 @@ p
 This plot shows the gap of mean percent excess death for metropolitan and nonmetropolitan. Nonmetropolitan has a obviously larger mean percent excess death than metropolitan areas. In order to see if the difference is significant, we will run a regression analysis regarding mean excess death and locality.  
 
 
-```{r wp2241 reg}
+```{r wp2241 reg,  message=FALSE}
 gp_locality_lm = lm(mean_ped ~locality , data = gp_cod_data)
 summary(gp_locality_lm)
 broom::tidy(gp_locality_lm)
@@ -200,7 +207,7 @@ The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 
 
 
 ### Mean Percent Excess Death vs. Causes of Death
-```{r cl3664 data}
+```{r cl3664 data,  message=FALSE}
 # How should we help nonmetropolitan areas improve public health? 
 cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
   clean_names() %>%
@@ -215,7 +222,7 @@ cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Le
 average percent access death for each cause in different locality 2005-2015
 
 
-```{r cl3664 plot}
+```{r cl3664 plot,  message=FALSE}
 cod_datayr2 %>%
   filter(benchmark == "2010 Fixed")%>%
   group_by(cause_of_death,year, locality)%>%
@@ -234,7 +241,7 @@ ggplot(aes(x = year, y = year_percent_death, color = cause_of_death))+
 
 Interpretation: As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
 
-```{r cl3664 lm}
+```{r cl3664 lm,  message=FALSE}
 cod_datayrlm = cod_datayr2 %>%
   filter(locality == "Nonmetropolitan",
          benchmark == "2010 Fixed")
@@ -250,7 +257,7 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
 
 
-```{r yz3306.1}
+```{r yz3306.1,  message=FALSE}
 cod_data %>%
   select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
   filter(locality != "All") %>% 
@@ -268,7 +275,7 @@ cod_data %>%
 yz3306:Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
 
 
-```{r yz3306.2}
+```{r yz3306.2,  message=FALSE}
 cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm_yz1)
 ```
@@ -280,7 +287,7 @@ broom::tidy(cod_lm_yz1)
 
 ##Map
 
-```{r}
+```{r,  message=FALSE}
 map_cod_data = cod_data %>%
   filter(locality == "Metropolitan") %>%
   select(state, locality, percent_excess_death) %>% 
