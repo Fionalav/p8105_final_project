@@ -95,7 +95,9 @@ region_cod_data = cod_data %>%
 * filtered out `United States` in the `state` variable.
 * Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
-
+###Data Processing
+After reviewing the dataset, we filtered out entries with `United States` in `state` variable.  Then we removed the percentage mark in the `Percent Potentially Excess Deaths` variable. We also created a variable called `mortality`by calculating the quotient of `observed death` over `population`. Lastly we filtered out entries with `District of\nColumbia` in `region` variable. After selecting the variables of interest, the data is ready for analysis.
+When we analyze the relationships between the outcomes(`mortality`, `percent excess death`, etc) and several covariates(`year`, `cause of death`, `population`, etc), we group the data by the covariates and calculate the mean outcome as response. 
 
 
 
@@ -131,6 +133,35 @@ p
 Here we show the division of the 10 U.S. Department of Health and Human Services public health regions in the figure below.
 
 <img src="./image/hhs_regions.png" style="width:75%">\
+
+From the linear regression plot below, we can see that the mortality of cancer, unintentional injury in both metropolitan regions and nonmetropolitan regions decrease through years 2005-2015. In contrast,  the mortality of heart disease and chronic lower respiratory disease in both metropolitan regions and nonmetropolitan regions increase through years 2005-2015. For stroke, the mortality in metropolitan regions decreases through years 2005-2015 whereas the mortality in metropolitan regions slightly increases through years 2005-2015. Concerning mortality and the trend in mortality, unintentional injury and heart disease needs more attention from public health experts.
+
+```{r cl3664 mortality}
+#mortality~year+cause
+cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
+  clean_names() %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+
+lineplotyr = cod_datayr2%>%
+  filter(benchmark == "2010 Fixed",
+         locality == c("Metropolitan", "Nonmetropolitan"))%>%
+  group_by(cause_of_death,year, locality)%>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
+  ungroup(year, cause_of_death)%>%
+  ggplot(aes(x = year, y = mortality, group = locality, color = locality))+
+  geom_point(size = 0.5)+
+  geom_smooth(method = lm, size = 0.5,se=FALSE) +
+    facet_grid(.~cause_of_death)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_x_continuous( breaks=seq(2005,2015,1))+
+  labs(title = "Mortality over years for five leading causes of death in different locality") 
+ggplotly(lineplotyr)
+```
+
 
 
 #### Descriptive Analysis
