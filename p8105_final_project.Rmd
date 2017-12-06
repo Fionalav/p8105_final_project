@@ -234,9 +234,9 @@ The above plot shows the gap of mean percent excess death for metropolitan and n
 #### Regression Analysis
 
 The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 8.046Nonmetropolitan.\
-*For people in metropolitan, the expected percent excess death has a decrease of 2.06. 
-* For people in non-metropolitan aream the expected percent excess death has an increase of 8.046. 
-* The p-values show these predictors are both significant. The adjusted R squared is 0.91, which indicates the regression model explains 91% of variation in mean percent excess death due to the variation in locality.  
+* For people in metropolitan, the expected percent excess death has a decrease of 2.06. 
+* For people in non-metropolitan area, the expected percent excess death has an increase of 8.046. 
+* The p-values show these predictors are both significant. Therefore, we conclude that there is significant difference in mean percent excess death between Metropolitan and Nonmetropolitan Area.
 
 ```{r wp2241 reg,  message=FALSE}
 gp_locality_lm = lm(mean_ped ~locality , data = gp_cod_data)
@@ -342,7 +342,7 @@ kable(rl2)
 
 
 
-As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of deaths. 
+As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death. Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of deaths. 
 
 #####Visulization
 
