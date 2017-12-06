@@ -25,6 +25,31 @@ library(fiftystater)
 library(RColorBrewer)
 ```
 
+## Introduction and Motivation
+The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. The dataset includes the U.S. Department of Health and Human Services public health regions. Therefore, we can investigate the leading causes of death of each region, and develop accordingly public health policy and remedies. 
+
+## Data Descriptions
+
+* Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
+
+## Approaches
+* From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas. 
+
+* We then analyzed several factors that might influence the rural-urban difference in potentially excess deaths from the five leading causes, many of which are associated with sociodemographic and ecological differences between rural and urban areas. 
+
+* Through statistical analysis, our report provides an interactive and straightforward view on the potentially excess deaths from the five leading causes of death in non-metropolitan and metropolitan areas. 
+
+* The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.
+
+## Visualizations
+Link to the Dashboard for this project is [Here]().
+
+## Conclusion
+
+## Notes
+* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
+* Link to the Screencast for this project is [Here]().
+
 
 ```{r load data}
 cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
