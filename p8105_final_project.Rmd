@@ -299,7 +299,7 @@ cod_datayr2 %>%
 
 
 
-From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the  excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
+From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
 
 
 ```{r cl3664 lm,  message=FALSE}
@@ -316,8 +316,12 @@ kable(rl5)
 
 
 ### Mean Percentage of Excess Death vs. Five Leading Cause of Death
+
+####Account for Locality
+
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
-As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`.
+
+As shown in the boxplots for all three regions, the rank of Mean Percentage of Excess Death of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`.
 
 ```{r yz3306.1,  message=FALSE}
 cod_data %>%
@@ -330,27 +334,35 @@ cod_data %>%
   ggplot(aes(x = cause_of_death,  y = mean_ped, fill = cause_of_death)) +
   geom_col() +
   facet_grid(~locality) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    x = "Five Leading Causes of Death",
+    y = "Mean Percentage of Excess Death",
+    fill = "Causes of Death"
+  )
 ```
 
-We then fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
+
+####Account for HHS Regions
+
+#####Linear Regression
+We first fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
 
 ```{r}
 region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
 rl1 = broom::tidy(region_lm)
 kable(rl1)
 
-region_locality_lm =lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
+region_locality_lm = lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
 rl2 = broom::tidy(region_locality_lm)
 kable(rl2)
 ```
 
 As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of deaths. 
 
+#####Visulization
 
-(for all five causes of deat if we seperate the effect of the gap between urban and rural area into different HHS region(Figure "above") as mentioned, the following chart gives detailed information.??????????????)
-
-
+As mentioned above, we have significant difference in the mean percetage of excess death for different HHS regions. For all five causes of death if we seperate the effect of the Difference in Cause of Death into different HHS region, the following chart gives detailed information.
 
 
 ```{r yz3306.3, message=FALSE}
@@ -373,23 +385,7 @@ cod_data %>%
   
 ```
 
-In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death in each HHS regions between Metropolitan and Nonmetropolitan Area"](https://github.com/Fionalav/final_project_shiny). 
-
-
-Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
-
-**interpretation on linear regression:**
-yz3306:Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates.
-
-```{r yz3306.2,  message=FALSE}
-cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
-rl6 = broom::tidy(cod_lm_yz1)
-kable(rl6)
-```
-
-
-
-
+In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://github.com/Fionalav/final_project_shiny). Select different HHS region to visulized the difference between Metropolitan and Nonmetropolitan Area for all five causes of death, respectively.
 
 
 
