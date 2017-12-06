@@ -26,7 +26,8 @@ library(RColorBrewer)
 library(broom)
 library(knitr)
 library(gapminder)
-library(lazyeval)
+library(forcats)
+
 ```
 
 ## Introduction and Motivation
@@ -129,8 +130,8 @@ cod_data %>%
   mutate(year = as.factor(year))
 p <- cod_data %>%
   plot_ly(
-    x = ~observed_deaths, 
-    y = ~expected_deaths, 
+    x = ~expected_deaths, 
+    y = ~observed_deaths, 
     size = ~population, 
     color = ~cause_of_death, 
     frame = ~hhs_region, 
@@ -215,6 +216,8 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
 yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
+
+
 ```{r yz3306.1}
 cod_data %>%
   na.omit %>%
