@@ -1,10 +1,12 @@
 ---
 title: "p8105_final_project"
-author: "Yulan Zhang"
-date: "November 2, 2017"
+author: "Chen Li (cl3664), Weixin Peng (wp2241), Xiangyu Shi (xs2329), Yulan Zhang (yz3306)"
+date: "December 6, 2017"
 output: 
   html_document:
     code_folding: hide
+    toc: true
+    toc_float: true
 ---
 
 ```{r set-up and loading packages, include=FALSE}
@@ -171,6 +173,43 @@ We expect to see 0.22576 less deaths for every 10000 people in the metropolitan 
 We expect to see 1.14451 more death for every 10000 people in the nonmetropolitan region as compared to all regions.
 
 
+##Map
+
+```{r,  message=FALSE}
+map_cod_data = cod_data %>%
+  filter(locality == "Metropolitan") %>%
+  select(state, locality, percent_excess_death) %>% 
+  group_by(state) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  dplyr::filter(!(state == "District of\nColumbia"))
+  
+
+map = as.tibble(fifty_states) %>%
+  group_by(id) %>% 
+  summarize(clong = mean(long), clat = mean(lat)) %>% 
+  filter(!(id == "district of columbia"))
+
+df <- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
+
+ggplot(df, aes(map_id = id)) + 
+    geom_map(aes(fill = rate), map = fifty_states) + 
+    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+    labs(x = "", y = "") +
+    theme(panel.background = element_blank(), 
+          axis.text.x = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.ticks = element_blank()) + 
+    geom_text(aes(x = clong, y = clat, label = state.abb)) +
+  scale_fill_gradient(low="gold", high="red")
+
+
+```
+
+Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
+
+<img src="./image/poverty_rate.png" style="width:75%">\
+If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
+
 
 ### Mean Percent Excess Death vs. Locality
 #### Data Visualization
@@ -315,45 +354,6 @@ kable(rl6)
 ```
 
 
-
-
-
-##Map
-
-```{r,  message=FALSE}
-map_cod_data = cod_data %>%
-  filter(locality == "Metropolitan") %>%
-  select(state, locality, percent_excess_death) %>% 
-  group_by(state) %>% 
-  summarise(mean_ped = mean(percent_excess_death)) %>% 
-  dplyr::filter(!(state == "District of\nColumbia"))
-  
-
-map = as.tibble(fifty_states) %>%
-  group_by(id) %>% 
-  summarize(clong = mean(long), clat = mean(lat)) %>% 
-  filter(!(id == "district of columbia"))
-
-df <- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
-
-ggplot(df, aes(map_id = id)) + 
-    geom_map(aes(fill = rate), map = fifty_states) + 
-    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
-    labs(x = "", y = "") +
-    theme(panel.background = element_blank(), 
-          axis.text.x = element_blank(), 
-          axis.text.y = element_blank(), 
-          axis.ticks = element_blank()) + 
-    geom_text(aes(x = clong, y = clat, label = state.abb)) +
-  scale_fill_gradient(low="gold", high="red")
-
-
-```
-
-Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
-
-<img src="./image/poverty_rate.png" style="width:75%">\
-If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
 
 
 
