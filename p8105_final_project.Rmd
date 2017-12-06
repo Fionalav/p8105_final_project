@@ -159,7 +159,7 @@ We expect to see 1.14451 more death for every 10000 people in the nonmetropolita
 
 
 ### Mean Percent Excess Death vs. Locality
-
+#### 
 ```{r wp2241}
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
@@ -249,10 +249,7 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
 yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 066c9212fe9218f503b990545ce88ab848f64098
 ```{r yz3306.1}
 cod_data %>%
   select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
