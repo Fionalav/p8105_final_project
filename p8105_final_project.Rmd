@@ -44,6 +44,9 @@ The five leading causes of death in the United States from 1999 to 2014 are canc
 
 
 ## Data Descriptions
+The dataset we are using has 191748 observations of 11 variables. The variables include year, cause of death, state, age range, hhs region, locality, number of observed deaths, population, number of expected deaths, percent of potential excess deaths, and number of potential excess deaths. The hhs region indicates the 10 U.S. Departtment of Health and Human Servoces public health regions.
+
+The number of observed deaths, population, number of expected deaths, percent of potential excess deaths, and number of potential excess deaths are continuous variables, and others are categorical variables. In this report, we are going to focus on potential excess deaths for locality, and how the five leading causes is distributed to the potential excess death. The percent excess deaths is calculated based on the three states that have the lowest death rate. The percent excess deaths ranges from 0 to 85.3% with a mean of 35.66%. The locality is divided by metropolitan and nonmetropolitan areas. 
 
 * Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
 
