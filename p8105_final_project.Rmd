@@ -143,12 +143,29 @@ p
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
   group_by(year, locality) %>% 
-  summarise(mean_ped = mean(percent_excess_death)) #doesn't work. Ask TA.
+  summarise(mean_ped = mean(percent_excess_death)) 
+ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_point(stat = "identity") + geom_smooth() + facet_grid(. ~ locality) 
 
-ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_point(stat = "identity") + geom_smooth() +
-facet_grid(. ~ locality) 
+renderPlotly({
+gp_cod_data_Metro = gp_cod_data %>%
+  group_by(year) %>%
+  filter(locality == "Metropolitan")
+gp_cod_data_nonMetro = gp_cod_data %>%
+  group_by(year) %>%
+  filter(locality == "Nonmetropolitan")
+gp_cod = cbind(gp_cod_data_Metro, gp_cod_data_nonMetro)
+
+p = gp_cod %>%
+plot_ly( x = ~year, y = ~mean_ped, name = 'Metropolitan', type = 'scatter', mode = 'markers') %>%
+  add_trace( y = ~mean_ped1, name = 'Nonmetropolitan', mode = 'markers') %>% 
+  layout(yaxis = list(title = 'mean percent excess death (Metropolitan/Nonmetropolitan)'))
+p
+})
+
 
 ```
+
+This plot shows the gap of mean percent excess death for metropolitan and nonmetropolitan. Nonmetropolitan has a obviously larger mean percent excess death than metropolitan areas. In order to see if the difference is significant, we will run a regression analysis regarding mean excess death and locality.  
 
 ```{r wp2241 reg}
 gp_locality_lm = lm(mean_ped ~locality , data = gp_cod_data)
