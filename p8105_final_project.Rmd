@@ -202,7 +202,35 @@ broom::tidy(gp_locality_lm)
 
 The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 8.046Nonmetropolitan. For people in metropolitan, the expected percent excess death has a decrease of 2.06. For people in non-metropolitan aream the expected percent excess death has an increase of 8.046. The p-values show these predictors are both significant. The adjusted R squared is 0.91, which indicates the regression model explains 91% of variation in mean percent excess death due to the variation in locality.  
 
+### Mortality vs Year & locality & cause of death
 
+```{r cl3664 mortality}
+#mortality~year+cause
+cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
+  clean_names() %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+
+lineplotyr = cod_datayr2%>%
+  filter(benchmark == "2010 Fixed",
+         locality == c("Metropolitan", "Nonmetropolitan"))%>%
+  group_by(cause_of_death,year, locality)%>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
+  ungroup(year, cause_of_death)%>%
+  ggplot(aes(x = year, y = mortality, group = locality, color = locality))+
+  geom_point(size = 0.5)+
+  geom_smooth(method = lm, size = 0.5,se=FALSE) +
+    facet_grid(.~cause_of_death)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_x_continuous( breaks=seq(2005,2015,1))+
+  labs(title = "Mortality over years for five leading causes of death in different locality") 
+ggplotly(lineplotyr)
+```
+
+From the linear plot, we can see that the mortality of cancer, unintentional injury in both metropolitan regions and nonmetropolitan regions decrease through years 2005-2015. In contrast,  the mortality of heart disease and chronic lower respiratory disease in both metropolitan regions and nonmetropolitan regions increase through years 2005-2015. For stroke, the mortality in metropolitan regions decreases through years 2005-2015 whereas the mortality in metropolitan regions slightly increases through years 2005-2015. Concerning mortality and the trend in mortality, unintentional injury and heart disease needs more attention from public health experts.
 ### Mean Percent Excess Death vs. Causes of Death
 ```{r cl3664 data}
 # How should we help nonmetropolitan areas improve public health? 
