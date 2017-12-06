@@ -1,0 +1,42 @@
+---
+title: "final_project_dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r 1}
+
+```
+
+
+
+### Chart B
+
+```{r 2}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Chart C
+
+```{r 3}
+
+```
+
+### Chart D
+```{r 4}
+
+```
+
