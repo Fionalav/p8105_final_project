@@ -101,7 +101,7 @@ kable(rl2)
 
 Interpretation: U.S. Department of Health and Human Services public health regions (1 through 10) are used as a categorical variable in the above regressions. Specific region classification is shown in the figure below.
 
-[attach image here].
+<img src="./image/hhs_regions.png" style="width:75%">\
 
 As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.
 
@@ -264,8 +264,15 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 ### Mean Percentage of Excess Death vs. Five Leading Cause of Death
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
 As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`.
+<<<<<<< HEAD
 ```{r yz3306.1,  message=FALSE}
 
+=======
+
+
+
+```{r yz3306.1,  message=FALSE}
+>>>>>>> 667868adab929cae16d0a55c63183dce21b1a2c5
 cod_data %>%
   select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
   filter(locality != "All") %>% 
@@ -352,6 +359,7 @@ ggplot(df, aes(map_id = id)) +
 
 Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
 
+<img src="./image/poverty_rate.png" style="width:75%">\
 If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
 
 
