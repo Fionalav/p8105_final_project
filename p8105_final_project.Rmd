@@ -95,7 +95,9 @@ region_cod_data = cod_data %>%
 * filtered out `United States` in the `state` variable.
 * Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
-
+###Data Processing
+After reviewing the dataset, we filtered out entries with `United States` in `state` variable.  Then we removed the percentage mark in the `Percent Potentially Excess Deaths` variable. We also created a variable called `mortality`by calculating the quotient of `observed death` over `population`. Lastly we filtered out entries with `District of\nColumbia` in `region` variable. After selecting the variables of interest, the data is ready for analysis.
+When we analyze the relationships between the outcomes(`mortality`, `percent excess death`, etc) and several covariates(`year`, `cause of death`, `population`, etc), we group the data by the covariates and calculate the mean outcome as response. 
 
 
 
@@ -132,6 +134,35 @@ Here we show the division of the 10 U.S. Department of Health and Human Services
 
 <img src="./image/hhs_regions.png" style="width:75%">\
 
+From the linear regression plot below, we can see that the mortality of cancer, unintentional injury in both metropolitan regions and nonmetropolitan regions decrease through years 2005-2015. In contrast,  the mortality of heart disease and chronic lower respiratory disease in both metropolitan regions and nonmetropolitan regions increase through years 2005-2015. For stroke, the mortality in metropolitan regions decreases through years 2005-2015 whereas the mortality in metropolitan regions slightly increases through years 2005-2015. Concerning mortality and the trend in mortality, unintentional injury and heart disease needs more attention from public health experts.
+
+```{r cl3664 mortality}
+#mortality~year+cause
+cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
+  clean_names() %>%
+  na.omit() %>%
+  filter(!(state == "United States")) %>%
+  separate(., percent_potentially_excess_deaths, into = c("percent_excess_death"), sep = "%") %>%
+  mutate(percent_excess_death = as.numeric(percent_excess_death), mortality = observed_deaths/population * 10000, mortality = as.numeric(mortality)) %>%
+  select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
+
+lineplotyr = cod_datayr2%>%
+  filter(benchmark == "2010 Fixed",
+         locality == c("Metropolitan", "Nonmetropolitan"))%>%
+  group_by(cause_of_death,year, locality)%>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
+  ungroup(year, cause_of_death)%>%
+  ggplot(aes(x = year, y = mortality, group = locality, color = locality))+
+  geom_point(size = 0.5)+
+  geom_smooth(method = lm, size = 0.5,se=FALSE) +
+    facet_grid(.~cause_of_death)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_x_continuous( breaks=seq(2005,2015,1))+
+  labs(title = "Mortality over years for five leading causes of death in different locality") 
+ggplotly(lineplotyr)
+```
+
+
 
 #### Descriptive Analysis
 
@@ -164,58 +195,14 @@ summary(mortality_lm)
 rl3 = broom::tidy(mortality_lm)
 kable(rl3)
 ```
-<<<<<<< HEAD
-**interpretation on linear regression:**
+
+
+
 Here we obtain the linear regression model of mortality = 4.103 - 0.226localityMetropolitan -1.145localityNonmetropolitan. 
 We expect to see 0.22576 less deaths for every 10000 people in the metropolitan region as compared to all regions. 
 We expect to see 1.14451 more death for every 10000 people in the nonmetropolitan region as compared to all regions.
-=======
->>>>>>> 27a279697412aecc47a89f7dfbf10a5a6cf83805
 
 
-<<<<<<< HEAD
-##### U.S. Map with Mean Percent of Excess Death Rate Distribution
-=======
-##Map
->>>>>>> bd381a2bda79e4502a9ecb87a9a6cd7395112d25
-
-Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
-
-
-```{r,  message=FALSE}
-map_cod_data = cod_data %>%
-  filter(locality == "Metropolitan") %>%
-  select(state, locality, percent_excess_death) %>% 
-  group_by(state) %>% 
-  summarise(mean_ped = mean(percent_excess_death)) %>% 
-  dplyr::filter(!(state == "District of\nColumbia"))
-  
-
-map = as.tibble(fifty_states) %>%
-  group_by(id) %>% 
-  summarize(clong = mean(long), clat = mean(lat)) %>% 
-  filter(!(id == "district of columbia"))
-
-df <- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
-
-ggplot(df, aes(map_id = id)) + 
-    geom_map(aes(fill = rate), map = fifty_states) + 
-    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
-    labs(x = "", y = "") +
-    theme(panel.background = element_blank(), 
-          axis.text.x = element_blank(), 
-          axis.text.y = element_blank(), 
-          axis.ticks = element_blank()) + 
-    geom_text(aes(x = clong, y = clat, label = state.abb)) +
-  scale_fill_gradient(low="gold", high="red")
-
-
-```
-
-
-If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
-
-<img src="./image/poverty_rate.png" style="width:75%">\
 
 
 ### Mean Percent Excess Death vs. Locality
@@ -260,7 +247,17 @@ summary(gp_locality_lm)
 rl4 = broom::tidy(gp_locality_lm)
 kable(rl4)
 ```
+<<<<<<< HEAD
 
+
+
+
+The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 8.046Nonmetropolitan. For people in metropolitan, the expected percent excess death has a decrease of 2.06. For people in non-metropolitan aream the expected percent excess death has an increase of 8.046. The p-values show these predictors are both significant. The adjusted R squared is 0.91, which indicates the regression model explains 91% of variation in mean percent excess death due to the variation in locality.  
+
+
+=======
+
+>>>>>>> 3d938490d6122be3e5a56fec6840c636cf3df2be
 
 
 ### Mean Percent Excess Death vs. Causes of Death
@@ -297,6 +294,15 @@ cod_datayr2 %>%
     )
 ```
 
+<<<<<<< HEAD
+
+
+
+As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
+
+
+=======
+>>>>>>> 3d938490d6122be3e5a56fec6840c636cf3df2be
 
 
 From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
@@ -343,10 +349,15 @@ cod_data %>%
 ```
 
 
+<<<<<<< HEAD
 ####Account for HHS Regions
 
 #####Linear Regression
 We first fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
+=======
+
+We then fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
+>>>>>>> f13fc1a67f2af80120a5ba702d8da429b33d3f94
 
 ```{r}
 region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
@@ -357,6 +368,8 @@ region_locality_lm = lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+re
 rl2 = broom::tidy(region_locality_lm)
 kable(rl2)
 ```
+
+
 
 As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of deaths. 
 
@@ -385,7 +398,68 @@ cod_data %>%
   
 ```
 
+<<<<<<< HEAD
 In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://github.com/Fionalav/final_project_shiny). Select different HHS region to visulized the difference between Metropolitan and Nonmetropolitan Area for all five causes of death, respectively.
+=======
+
+In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death in each HHS regions between Metropolitan and Nonmetropolitan Area"](https://github.com/Fionalav/final_project_shiny). 
+
+
+Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
+
+**interpretation on linear regression:**
+Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates.
+
+```{r yz3306.2,  message=FALSE}
+cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
+rl6 = broom::tidy(cod_lm_yz1)
+kable(rl6)
+```
+
+
+##### U.S. Map with Mean Percent of Excess Death Rate Distribution
+
+
+
+Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
+
+
+```{r,  message=FALSE}
+map_cod_data = cod_data %>%
+  filter(locality == "Metropolitan") %>%
+  select(state, locality, percent_excess_death) %>% 
+  group_by(state) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  dplyr::filter(!(state == "District of\nColumbia"))
+  
+
+map = as.tibble(fifty_states) %>%
+  group_by(id) %>% 
+  summarize(clong = mean(long), clat = mean(lat)) %>% 
+  filter(!(id == "district of columbia"))
+
+df <- cbind(map, state.abb, state.center, rate = unique(map_cod_data$mean_ped))
+
+ggplot(df, aes(map_id = id)) + 
+    geom_map(aes(fill = rate), map = fifty_states) + 
+    expand_limits(x = fifty_states$long, y = fifty_states$lat) + 
+    labs(x = "", y = "") +
+    theme(panel.background = element_blank(), 
+          axis.text.x = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.ticks = element_blank()) + 
+    geom_text(aes(x = clong, y = clat, label = state.abb)) +
+  scale_fill_gradient(low="gold", high="red")
+
+
+```
+
+
+If we compare this map with the poverty map of the US, we see that states with higher mean percent excess death is more likely to be in the poverty area. 
+
+<img src="./image/poverty_rate.png" style="width:75%">\
+
+>>>>>>> f13fc1a67f2af80120a5ba702d8da429b33d3f94
 
 
 
