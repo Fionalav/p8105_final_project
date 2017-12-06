@@ -74,6 +74,29 @@ cod_data = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leadi
 - Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
 
+```{r region data}
+region_cod_data = cod_data %>%
+  select(state, locality, hhs_region, percent_excess_death) %>% 
+  group_by(state,locality, hhs_region) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  dplyr::filter(!(state == "District of\nColumbia")) %>% 
+  mutate(hhs_region = as.character(hhs_region))
+
+
+region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
+rl1 = broom::tidy(region_lm)
+kable(rl1)
+
+region_locality_lm =lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
+rl2 = broom::tidy(region_locality_lm)
+kable(rl2)
+```
+
+Interpretation: U.S. Department of Health and Human Services public health regions (1 through 10) are used as a categorical variable in the above regressions. Specific region classification is shown in the figure below.
+
+[attach image here].
+
+As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.
 
 xs2329:
 
@@ -210,32 +233,32 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
 yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
+
 ```{r yz3306.1}
 cod_data %>%
-  na.omit %>%
-  group_by(cause_of_death) %>%
-  mutate(mean_percent_excess_death = mean(percent_excess_death)) %>%
-  ungroup(cause_of_death) %>%
-  mutate(cause_of_death = fct_reorder(cause_of_death, mean_percent_excess_death)) %>%
-  ggplot(aes(x = cause_of_death, y = percent_excess_death, fill = cause_of_death)) +
-  geom_boxplot() +
+  select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
+  filter(locality != "All") %>% 
+  mutate(hhs_region = as.factor(hhs_region)) %>% 
+  group_by(cause_of_death, locality) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = cause_of_death,  y = mean_ped, fill = cause_of_death)) +
+  geom_col() +
   facet_grid(~locality) +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))  +
-  theme(legend.position = "bottom")
-
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
+
 yz3306:Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
+
 
 ```{r yz3306.2}
 cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
 broom::tidy(cod_lm_yz1)
 ```
 
-```{r yz3306.3}
-#PLOTLY
 
-```
+
 
 ```{r Questions}
 #Do we need to include the plot of the linear model? Some plots. 
@@ -244,6 +267,8 @@ broom::tidy(cod_lm_yz1)
 #How to interpret percent excess death? According to the benchmark of the three lowest states.
 #How to make a map? Still under investigation...
 ```
+
+##Map
 
 ```{r}
 map_cod_data = cod_data %>%
@@ -278,29 +303,6 @@ ggplot(df, aes(map_id = id)) +
 
 
 
-```{r}
-region_cod_data = cod_data %>%
-  select(state, locality, hhs_region, percent_excess_death) %>% 
-  group_by(state,locality, hhs_region) %>% 
-  summarise(mean_ped = mean(percent_excess_death)) %>% 
-  dplyr::filter(!(state == "District of\nColumbia")) %>% 
-  mutate(hhs_region = as.character(hhs_region))
-
-
-region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
-rl1 = broom::tidy(region_lm)
-kable(rl1)
-
-region_locality_lm =lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
-rl2 = broom::tidy(region_locality_lm)
-kable(rl2)
-```
-
-Interpretation: U.S. Department of Health and Human Services public health regions (1 through 10) are used as a categorical variable in the above regressions. Specific region classification is shown in the figure below.
-
-[attach image here].
-
-As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death.
 
 
 
