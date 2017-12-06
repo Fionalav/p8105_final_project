@@ -160,9 +160,12 @@ lineplotyr = cod_datayr2%>%
   geom_smooth(method = lm, size = 0.5,se=FALSE) +
     facet_grid(.~cause_of_death)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_x_continuous( breaks=seq(2005,2015,1))+
-  labs(title = "Mortality over years for five leading causes of death in different locality") 
-ggplotly(lineplotyr)
+  scale_x_continuous( breaks=seq(2005,2015,1))
+ggplotly(lineplotyr) %>% 
+  layout(title = "Mortality over years for five leading causes of death in different locality",
+     #xaxis = list(showticklabels = FALSE),
+     legend = list(orientation = "h",
+                   y = -0.1, x = 0.3))
 ```
 
 
@@ -263,7 +266,14 @@ The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 
 >>>>>>> 3d938490d6122be3e5a56fec6840c636cf3df2be
 
 
-### Mean Percent Excess Death vs. Causes of Death
+
+
+
+
+### Mean Percentage of Excess Death vs. Five Leading Cause of Death
+
+### Account for Year
+
 **How should we help nonmetropolitan areas improve public health? **
 ```{r cl3664 data,  message=FALSE}
 cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
@@ -297,19 +307,7 @@ cod_datayr2 %>%
     )
 ```
 
-<<<<<<< HEAD
-
-
-
-As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
-
-
-=======
->>>>>>> 3d938490d6122be3e5a56fec6840c636cf3df2be
-
-
 From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
-
 
 ```{r cl3664 lm,  message=FALSE}
 cod_datayrlm = cod_datayr2 %>%
@@ -320,11 +318,6 @@ summary(lmpop)
 rl5 = broom::tidy(lmpop)
 kable(rl5)
 ```
-
-
-
-
-### Mean Percentage of Excess Death vs. Five Leading Cause of Death
 
 ####Account for Locality
 
