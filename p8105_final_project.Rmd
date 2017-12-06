@@ -349,15 +349,11 @@ cod_data %>%
 ```
 
 
-<<<<<<< HEAD
 ####Account for HHS Regions
 
 #####Linear Regression
 We first fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
-=======
 
-We then fit `hhs_region` into the linear model, as well as a linear model with both `hhs_region` and `locality` to check their assosiations with mean percent excess deaths. 
->>>>>>> f13fc1a67f2af80120a5ba702d8da429b33d3f94
 
 ```{r}
 region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
@@ -398,23 +394,12 @@ cod_data %>%
   
 ```
 
-<<<<<<< HEAD
-In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://github.com/Fionalav/final_project_shiny). Select different HHS region to visulized the difference between Metropolitan and Nonmetropolitan Area for all five causes of death, respectively.
-=======
 
-In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death in each HHS regions between Metropolitan and Nonmetropolitan Area"](https://github.com/Fionalav/final_project_shiny). 
+In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://fionalav.shinyapps.io/Final_prject_shiny/).\
+Select different `HHS region` to visualized the difference between Metropolitan and Nonmetropolitan Area for all five causes of death, respectively.
 
+As shown in the `Shiny-enabled Flexdashboard`, we observe that for all five causes of death, the Mean %Excess Death is higher in Nonmetropolitan than Metropolitan Area for all HHS regions, except for region 2, 5, 8, 9. In region 2, 5 and 9, only Stroke is higher in Metropolitan Area. For all other four causes of death, Nonmetropolitan is higher than Metropolitan Area.
 
-Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
-
-**interpretation on linear regression:**
-Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates.
-
-```{r yz3306.2,  message=FALSE}
-cod_lm_yz1 = lm(percent_excess_death ~cause_of_death, data = cod_data)
-rl6 = broom::tidy(cod_lm_yz1)
-kable(rl6)
-```
 
 
 ##### U.S. Map with Mean Percent of Excess Death Rate Distribution
@@ -459,7 +444,7 @@ If we compare this map with the poverty map of the US, we see that states with h
 
 <img src="./image/poverty_rate.png" style="width:75%">\
 
->>>>>>> f13fc1a67f2af80120a5ba702d8da429b33d3f94
+
 
 
 
