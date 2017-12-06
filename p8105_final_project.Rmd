@@ -290,7 +290,11 @@ cod_datayr2 %>%
   facet_grid(.~locality) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_x_continuous( breaks=seq(2005,2015,1)) +
-  labs(title = "Average yearly excess death percentage for different locality")
+  labs(
+    title = "Average yearly excess death percentage for different locality",
+    color = "Cause of Death",
+    y = "Yearly Mean percentage of Excess Death"
+    )
 ```
 
 
