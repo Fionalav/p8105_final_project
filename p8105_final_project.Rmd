@@ -1,10 +1,12 @@
 ---
 title: "p8105_final_project"
-author: "Yulan Zhang"
-date: "November 2, 2017"
+author: "Chen Li (cl3664), Weixin Peng (wp2241), Xiangyu Shi (xs2329), Yulan Zhang (yz3306)"
+date: "December 6, 2017"
 output: 
   html_document:
     code_folding: hide
+    toc: true
+    toc_float: true
 ---
 
 ```{r set-up and loading packages, include=FALSE}
