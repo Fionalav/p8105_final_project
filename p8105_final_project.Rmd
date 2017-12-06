@@ -139,7 +139,9 @@ p <- cod_data %>%
     hoverinfo = "text",
     type = 'scatter',
     mode = 'markers'
-  ) 
+  ) %>% 
+  layout(title = "Change of Standardized Mortality Ratio in National Public Health Regions")
+
 p
 ```
 
@@ -149,7 +151,6 @@ p
 ### Question of concern: If percent excess death has significant difference between metro and non-metro groups.
 gp_cod_data = cod_data %>%
   group_by(year, locality) %>% 
-<<<<<<< HEAD
   summarise(mean_ped = mean(percent_excess_death)) 
 ggplot(gp_cod_data, aes(x = year, y = mean_ped, fill = locality)) + geom_point(stat = "identity") + geom_smooth() + facet_grid(. ~ locality) 
 
