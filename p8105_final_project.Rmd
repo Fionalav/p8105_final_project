@@ -247,12 +247,10 @@ From the linear model based on 2010 fixed benchmark, we can tell that controllin
 ### Mean Percentage of Excess Death vs. Five Leading Cause of Death
 
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
-yz3306: As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`, with respect to `All` Locality.
 
-<<<<<<< HEAD
-=======
+As shown in the boxplots for all three regions, the rank of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`.
 
->>>>>>> 066c9212fe9218f503b990545ce88ab848f64098
+
 ```{r yz3306.1}
 cod_data %>%
   select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
@@ -267,8 +265,32 @@ cod_data %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
+For the above graph, if we seperate the effect of the gap between urban and rural area into different HHS region(Figure "above") as mentioned, the following chart gives detailed information.
+```{r yz3306.3}
+cod_data %>%
+  select(state, locality, percent_excess_death, hhs_region, cause_of_death) %>%
+  filter(locality != "All") %>% 
+  mutate(hhs_region = as.factor(hhs_region)) %>% 
+  group_by(cause_of_death, locality,hhs_region) %>% 
+  summarise(mean_ped = mean(percent_excess_death)) %>% 
+  ggplot(aes(x = hhs_region,  y = mean_ped, fill = hhs_region)) +
+  geom_col() +
+  facet_grid(~cause_of_death) +
+  theme(axis.text.x = element_text(angle = 15)) +
+    labs(
+      y = "Mean %Excess Death",
+      x = "HHS Regions",
+      fill = "HHS Region"
+    ) 
+    
+  
+```
 
-yz3306:Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
+In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death in each HHS regions between Metropolitan and Nonmetropolitan Area"](https://github.com/Fionalav/final_project_shiny). 
+
+---
+
+Regress percent of excess death on cause of death, which is a categorical variable. with respect to cancer, the least of the five causes, all 4 have additional percent of death as evaluated by the estimates. The results give statisically significant estimates .
 
 
 ```{r yz3306.2}
