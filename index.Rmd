@@ -33,9 +33,11 @@ The five leading causes of death in the United States from 1999 to 2014 are canc
 
 ## Visualizations
 Link to the Dashboard for this project is [Here]().
+Link to the Shiny Dashboard for this project is [Here](https://fionalav.shinyapps.io/Final_prject_shiny/).
 
 ## Conclusion
 
 ## Notes
 * Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
 * Link to the Screencast for this project is [Here]().
+* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).
