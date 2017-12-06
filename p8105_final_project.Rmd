@@ -44,6 +44,9 @@ The five leading causes of death in the United States from 1999 to 2014 are canc
 
 
 ## Data Descriptions
+The dataset we are using has 191748 observations of 11 variables. The variables include year, cause of death, state, age range, hhs region, locality, number of observed deaths, population, number of expected deaths, percent of potential excess deaths, and number of potential excess deaths. The hhs region indicates the 10 U.S. Departtment of Health and Human Servoces public health regions.
+
+The number of observed deaths, population, number of expected deaths, percent of potential excess deaths, and number of potential excess deaths are continuous variables, and others are categorical variables. In this report, we are going to focus on potential excess deaths for locality, and how the five leading causes is distributed to the potential excess death. The percent excess deaths is calculated based on the three states that have the lowest death rate. The percent excess deaths ranges from 0 to 85.3% with a mean of 35.66%. The locality is divided by metropolitan and nonmetropolitan areas. 
 
 * Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
 
@@ -157,9 +160,12 @@ lineplotyr = cod_datayr2%>%
   geom_smooth(method = lm, size = 0.5,se=FALSE) +
     facet_grid(.~cause_of_death)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_x_continuous( breaks=seq(2005,2015,1))+
-  labs(title = "Mortality over years for five leading causes of death in different locality") 
-ggplotly(lineplotyr)
+  scale_x_continuous( breaks=seq(2005,2015,1))
+ggplotly(lineplotyr) %>% 
+  layout(title = "Mortality over years for five leading causes of death in different locality",
+     #xaxis = list(showticklabels = FALSE),
+     legend = list(orientation = "h",
+                   y = -0.1, x = 0.3))
 ```
 
 
@@ -251,7 +257,26 @@ kable(rl4)
 
 
 
+<<<<<<< HEAD
 ### Mean Percent Excess Death vs. Causes of Death
+=======
+The regression model is mean percent_excess_death = 33.89 - 2.05*Metropolitan + 8.046Nonmetropolitan. For people in metropolitan, the expected percent excess death has a decrease of 2.06. For people in non-metropolitan aream the expected percent excess death has an increase of 8.046. The p-values show these predictors are both significant. The adjusted R squared is 0.91, which indicates the regression model explains 91% of variation in mean percent excess death due to the variation in locality.  
+
+
+=======
+
+>>>>>>> 3d938490d6122be3e5a56fec6840c636cf3df2be
+
+
+
+
+
+
+### Mean Percentage of Excess Death vs. Five Leading Cause of Death
+
+### Account for Year
+
+>>>>>>> d25de8ef83936b84430ea1f897657833720b69ea
 **How should we help nonmetropolitan areas improve public health? **
 ```{r cl3664 data,  message=FALSE}
 cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
@@ -285,10 +310,12 @@ cod_datayr2 %>%
     )
 ```
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d25de8ef83936b84430ea1f897657833720b69ea
 From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
-
 
 ```{r cl3664 lm,  message=FALSE}
 cod_datayrlm = cod_datayr2 %>%
@@ -299,11 +326,6 @@ summary(lmpop)
 rl5 = broom::tidy(lmpop)
 kable(rl5)
 ```
-
-
-
-
-### Mean Percentage of Excess Death vs. Five Leading Cause of Death
 
 ####Account for Locality
 
@@ -439,6 +461,9 @@ If we compare this map with the poverty map of the US, we see that states with h
 * Link to the Screencast for this project is [Here]().
 * Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).
 
+## References
+* Garcia, M. C., Faul, M., Massetti, G., Thomas, C. C., Hong, Y., Bauer, U. E., & Iademarco, M. F. (2017). Reducing Potentially Excess Deaths from the Five Leading Causes of Death in the Rural United States. MMWR. Surveillance Summaries, 66(2), 1-7. doi:10.15585/mmwr.ss6602a1
 
+* List of U.S. states by poverty rate. (2017, November 24). Retrieved December 06, 2017, from https://en.wikipedia.org/wiki/List_of_U.S._states_by_poverty_rate
 
 
