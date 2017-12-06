@@ -263,39 +263,38 @@ cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Le
   select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
 ```
 
+As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
+
 ```{r cl3664 plot,  message=FALSE}
 cod_datayr2 %>%
-  filter(benchmark == "2010 Fixed")%>%
-  group_by(cause_of_death,year, locality)%>%
-  mutate(year_percent_death=mean(percent_excess_death))%>%
-  distinct(year, cause_of_death, locality, .keep_all = TRUE)%>%
-  ungroup(year, locality)%>%
-ggplot(aes(x = year, y = year_percent_death, color = cause_of_death))+
-  geom_point(size = 1)+
+  filter(benchmark == "2010 Fixed") %>%
+  group_by(cause_of_death,year, locality) %>%
+  mutate(year_percent_death=mean(percent_excess_death)) %>%
+  distinct(year, cause_of_death, locality, .keep_all = TRUE) %>%
+  ungroup(year, locality) %>%
+  ggplot(aes(x = year, y = year_percent_death, color = cause_of_death)) +
+  geom_point(size = 1) +
   geom_line(size = 1) +
-  facet_grid(.~locality)+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_x_continuous( breaks=seq(2005,2015,1))+
+  facet_grid(.~locality) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_continuous( breaks=seq(2005,2015,1)) +
   labs(title = "Average yearly excess death percentage for different locality")
 ```
 
-**interpretation on linear regression:**
-As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
 
-
+From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the  excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
 
 
 ```{r cl3664 lm,  message=FALSE}
 cod_datayrlm = cod_datayr2 %>%
   filter(locality == "Nonmetropolitan",
          benchmark == "2010 Fixed")
-lmpop = lm(data=cod_datayrlm, percent_excess_death~year+cause_of_death)
+lmpop = lm(data = cod_datayrlm, percent_excess_death ~ year+cause_of_death)
 summary(lmpop)
 rl5 = broom::tidy(lmpop)
 kable(rl5)
 ```
 
-From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the  excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
 
 
 
