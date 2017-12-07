@@ -11,7 +11,7 @@ navbar:
   - text: Introduction
     href: introduction.html
   - text: Visualizations
-    href: visualizations.html 
+    href: https://wp2241.github.io/final-project-flexdashboard/ 
   - text: References
     href: references.html
 output:
