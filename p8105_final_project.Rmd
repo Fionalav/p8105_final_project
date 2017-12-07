@@ -442,7 +442,7 @@ If we compare this map with the poverty map of the US, we see that states with h
 
 
 
-## Conclusion and Public Health implications 
+## Conclusion and Public Health Implications 
 
 <<<<<<< HEAD
 In this project, we analyzed the rural-urban gap of mortality rate and mean percent excess deaths in the United States from 2005-2015 with the goal of suggesting possible preventive methods and best practices to reduce such gap based on our findings. Major findings in this project include\
