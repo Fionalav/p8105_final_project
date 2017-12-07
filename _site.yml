@@ -10,6 +10,8 @@ navbar:
   left: 
   - text: Visualizations
     href: https://wp2241.github.io/final-project-flexdashboard/ 
+  - text: Shiny
+    href: https://fionalav.shinyapps.io/Final_prject_shiny/
   - text: References
     href: references.html
   - text: Full Report
