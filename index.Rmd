@@ -1,9 +1,13 @@
 ---
 title: Rural-Urban Disparities in Five Leading Causes of Mortality in the United States
 ---
+
+<br>
+
 ## Introduction and Motivation
 The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. The dataset includes the U.S. Department of Health and Human Services public health regions. Therefore, we can investigate the leading causes of death of each region, and suggest accordingly public health policy and remedies.  
 
+<br>
 
 ## Data Descriptions
 In this report, we are going to focus on percent excess deaths for locality, and how the five leading causes is distributed to the percent excess death. `Percent excess deaths` for each State are calculated as following: 
@@ -11,6 +15,8 @@ In this report, we are going to focus on percent excess deaths for locality, and
 percent excess deaths = $\frac{\text{observed death} - \text{expected death}} {\text{observed death}}$
  
 * Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
+
+<br>
 
 ## Approaches
 * From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas. 
@@ -21,9 +27,13 @@ percent excess deaths = $\frac{\text{observed death} - \text{expected death}} {\
 
 * The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.
 
+<br>
+
 ## Visualizations
-Link to the Dashboard for this project is [Here]().
-Link to the Shiny Dashboard for this project is [Here](https://fionalav.shinyapps.io/Final_prject_shiny/).
+* Link to the Dashboard for this project is [Here](https://wp2241.github.io/final-project-flexdashboard/).
+* Link to the Shiny Dashboard for this project is [Here](https://fionalav.shinyapps.io/Final_prject_shiny/).
+
+<br>
 
 ## Conclusion
 * Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015. 
