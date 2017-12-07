@@ -18,14 +18,16 @@ percent excess deaths = $\frac{\text{observed death} - \text{expected death}} {\
 
 <br>
 
-## Approaches
-* From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas. 
+## Questions of Concern
+* 
 
-* We then analyzed several factors that might influence the rural-urban difference in potentially excess deaths from the five leading causes, many of which are associated with sociodemographic and ecological differences between rural and urban areas. 
+* Does mean percent excess death have significant difference between metro and non-metro groups? 
 
-* Through statistical analysis, our report provides an interactive and straightforward view on the potentially excess deaths from the five leading causes of death in non-metropolitan and metropolitan areas. 
+* How should we help nonmetropolitan areas improve public health?
 
-* The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.
+* For each of the five cause of death, what is the mean percent of excess death? 
+
+
 
 <br>
 
