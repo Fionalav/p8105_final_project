@@ -8,12 +8,12 @@ navbar:
   - icon: fa-github fa-lg
     href: https://github.com/Fionalav/p8105_final_project
   left: 
-  - text: Introduction
-    href: introduction.html
   - text: Visualizations
     href: https://wp2241.github.io/final-project-flexdashboard/ 
   - text: References
     href: references.html
+  - text: Full Report
+    href: p8105_final_project.html
 output:
   html_document:
     lib_dir: site_libs
