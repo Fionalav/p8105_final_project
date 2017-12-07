@@ -131,7 +131,7 @@ p <- cod_data %>%
     type = 'scatter',
     mode = 'markers'
   ) %>% 
-  layout(title = "Change of Standardized Mortality Ratio in National Public Health Regions")
+  layout(title = "Change of Standardized Mortality Ratio in National Public Health Regions", yaxis=list(title="Observed Death"),xaxis=list(title="Expected Death"))
 
 p
 ```
