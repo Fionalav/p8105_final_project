@@ -19,13 +19,14 @@ percent excess deaths = $\frac{\text{observed death} - \text{expected death}} {\
 <br>
 
 ## Questions of Concern
-* 
 
-* Does mean percent excess death have significant difference between metro and non-metro groups? 
+* Does mean percent excess death have significant difference between metropolitan and nonmetropolitan areas? 
 
-* How should we help nonmetropolitan areas improve public health?
+* How does mean percent of excess death the change across the years?
 
 * For each of the five cause of death, what is the mean percent of excess death? 
+
+* For different Public Health Region, are there differences in mean percent of excess death for five leading causes of death? Is it also different for metropolitan and nonmetropolitan areas? 
 
 
 

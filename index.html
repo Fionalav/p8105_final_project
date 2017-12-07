@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -31,10 +31,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -180,6 +182,9 @@ $(document).ready(function () {
   <a href="https://wp2241.github.io/final-project-flexdashboard/">Visualizations</a>
 </li>
 <li>
+  <a href="https://fionalav.shinyapps.io/Final_prject_shiny/">Shiny</a>
+</li>
+<li>
   <a href="references.html">References</a>
 </li>
 <li>
@@ -226,13 +231,13 @@ $(document).ready(function () {
 </ul>
 <p><br></p>
 </div>
-<div id="approaches" class="section level2">
-<h2>Approaches</h2>
+<div id="questions-of-concern" class="section level2">
+<h2>Questions of Concern</h2>
 <ul>
-<li><p>From the dataset, we obtain the information that the number of potentially excess deaths from the five leading causes in rural areas was higher than those in urban areas.</p></li>
-<li><p>We then analyzed several factors that might influence the rural-urban difference in potentially excess deaths from the five leading causes, many of which are associated with sociodemographic and ecological differences between rural and urban areas.</p></li>
-<li><p>Through statistical analysis, our report provides an interactive and straightforward view on the potentially excess deaths from the five leading causes of death in non-metropolitan and metropolitan areas.</p></li>
-<li><p>The ultimate goal is to bring attention to preventing deaths in the rural areas through improving healthcare services and public health programs.</p></li>
+<li><p>Does mean percent excess death have significant difference between metropolitan and nonmetropolitan areas?</p></li>
+<li><p>How does mean percent of excess death the change across the years?</p></li>
+<li><p>For each of the five cause of death, what is the mean percent of excess death?</p></li>
+<li><p>For different Public Health Region, are there differences in mean percent of excess death for five leading causes of death? Is it also different for metropolitan and nonmetropolitan areas?</p></li>
 </ul>
 <p><br></p>
 </div>
