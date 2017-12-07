@@ -300,7 +300,7 @@ cod_datayr2 %>%
     )
 ```
 
-####Linear Regression Analysis
+#####Linear Regression Analysis
 From the linear model based on 2010 fixed benchmark, we can tell that controlling for `cause of death`, the `mean percentage of excess death` shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein `unintentional injury` and `chronic lower respiratory disease` have on average the highest excess death percentage.
 
 ```{r cl3664 lm,  message=FALSE}
