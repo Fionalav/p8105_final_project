@@ -443,12 +443,12 @@ If we compare this map with the poverty map of the US, we see that states with h
 
 ## Conclusion and Public Health implications 
 
-In this project, we analyzed the rural-urban gap of mortality rate and mean percent excess deaths in the United States from 2005-2015 with the goal of suggesting possible preventive methods and best practices to reduce such gap based on our findings. Major finds in this project includes
- Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015. 
-Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of disease. 
-Southeast region appears to have significantly high mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.
-The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies. 
+In this project, we analyzed the rural-urban gap of mortality rate and mean percent excess deaths in the United States from 2005-2015 with the goal of suggesting possible preventive methods and best practices to reduce such gap based on our findings. Major findings in this project include\
 
+* Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015.\
+* Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of death.\
+* Southeast region appears to have significantly higher mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.\
+* The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies.\
 
 The above findings suggest that there might be sociodemographic, cultural, behavioral, and structural differences between rural-urban areas that contribute to the gap in mortality rate and mean percent excess deaths. People living in the rural area are more likely to experience poverty, poor nutrition, lack of physical activity, higher prevalence of tobacco use. More importantly, people from the rural areas are more vulnerable to potential disease due to the barriers to health care access. In rural areas as well as some less developed Southern states, health cares needs are often unmet due to lack of preventive and screening serves and timely urgent and emergency services. 
 
