@@ -2,26 +2,35 @@
 
 This site gives introduction and information on a Data Science Final Project for Course P8105 at Mailman School of Public Health, Columbia Univeristy Medical Center.\
 
-Collaborators for this project:\
- * Chen Li (cl3664)\
+Collaborators for this project:
 
- * Weixin Peng (wp2241)\
+* Chen Li (cl3664)
 
- * Xiangyu Shi (xs2329)\
+* Weixin Peng (wp2241)
 
- * Yulan Zhang (yz3306)\
+* Xiangyu Shi (xs2329)
+
+* Yulan Zhang (yz3306)
+
 
 \newline
 
 
 ###Additional Links
 
-* Detailed Background and Introduction to the Data can be accessed [Here](https://catalog.data.gov/dataset/nchs-potentially-excess-deaths-from-the-five-leading-causes-of-death).\
-* Interesting Visulizations from CDC, National Center for Health Statistics, *Data Visualiztion Gallery* is [Here](https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/).\
-* Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
+* Detailed Background and Introduction to the Data can be accessed [Here](https://catalog.data.gov/dataset/nchs-potentially-excess-deaths-from-the-five-leading-causes-of-death).
 
-* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).\
+* Interesting Visulizations from CDC, National Center for Health Statistics, *Data Visualiztion Gallery* is [Here](https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/).
 
-* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).\
+* Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).
+
+
+
+* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
+
+
+* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).
+
+
 
 * Link to the Screencast for this project is [Here]().

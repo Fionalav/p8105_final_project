@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -31,10 +31,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -212,27 +214,24 @@ $(document).ready(function () {
 <div id="about-this-site" class="section level3">
 <h3>About this site</h3>
 <p>This site gives introduction and information on a Data Science Final Project for Course P8105 at Mailman School of Public Health, Columbia Univeristy Medical Center.<br />
-Collaborators for this project:<br />
-* Chen Li (cl3664)<br />
-* Weixin Peng (wp2241)<br />
-* Xiangyu Shi (xs2329)<br />
-* Yulan Zhang (yz3306)<br />
-</p>
+Collaborators for this project:</p>
+<ul>
+<li><p>Chen Li (cl3664)</p></li>
+<li><p>Weixin Peng (wp2241)</p></li>
+<li><p>Xiangyu Shi (xs2329)</p></li>
+<li><p>Yulan Zhang (yz3306)</p></li>
+</ul>
+
 </div>
 <div id="additional-links" class="section level3">
 <h3>Additional Links</h3>
 <ul>
-<li>Detailed Background and Introduction to the Data can be accessed <a href="https://catalog.data.gov/dataset/nchs-potentially-excess-deaths-from-the-five-leading-causes-of-death">Here</a>.<br />
-</li>
-<li>Interesting Visulizations from CDC, National Center for Health Statistics, <em>Data Visualiztion Gallery</em> is <a href="https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/">Here</a>.<br />
-</li>
-<li>Version of data used for analysis is <a href="https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD">Here</a>.<br />
-</li>
-<li>Link to the GitHub repository containing R Markdown document for this project is <a href="https://github.com/Fionalav/p8105_final_project">Here</a>.<br />
-</li>
-<li>Link to the GitHub repository containing R Markdown document for Shiny Dashboard is <a href="https://github.com/Fionalav/final_project_shiny">Here</a>.<br />
-</li>
-<li>Link to the Screencast for this project is <a href="">Here</a>.</li>
+<li><p>Detailed Background and Introduction to the Data can be accessed <a href="https://catalog.data.gov/dataset/nchs-potentially-excess-deaths-from-the-five-leading-causes-of-death">Here</a>.</p></li>
+<li><p>Interesting Visulizations from CDC, National Center for Health Statistics, <em>Data Visualiztion Gallery</em> is <a href="https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/">Here</a>.</p></li>
+<li><p>Version of data used for analysis is <a href="https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD">Here</a>.</p></li>
+<li><p>Link to the GitHub repository containing R Markdown document for this project is <a href="https://github.com/Fionalav/p8105_final_project">Here</a>.</p></li>
+<li><p>Link to the GitHub repository containing R Markdown document for Shiny Dashboard is <a href="https://github.com/Fionalav/final_project_shiny">Here</a>.</p></li>
+<li><p>Link to the Screencast for this project is <a href="">Here</a>.</p></li>
 </ul>
 </div>
 
