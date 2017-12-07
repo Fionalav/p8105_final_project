@@ -1,0 +1,14 @@
+---
+title: References
+output: html_document
+---
+
+\newline
+
+
+
+* Garcia, M. C., Faul, M., Massetti, G., Thomas, C. C., Hong, Y., Bauer, U. E., & Iademarco, M. F. (2017). Reducing Potentially Excess Deaths from the Five Leading Causes of Death in the Rural United States. MMWR. Surveillance Summaries, 66(2), 1-7. doi:10.15585/mmwr.ss6602a1
+
+\newline
+
+* List of U.S. states by poverty rate. (2017, November 24). Retrieved December 06, 2017, from https://en.wikipedia.org/wiki/List_of_U.S._states_by_poverty_rate

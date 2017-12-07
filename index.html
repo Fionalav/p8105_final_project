@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -31,12 +31,10 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
 }
 </script>
 
@@ -174,11 +172,19 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">P8105 Final Project</a>
+      <a class="navbar-brand" href="index.html">Home</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li>
+  <a href="introduction.html">Introduction</a>
+</li>
+<li>
+  <a href="visualizations.html">Visualizations</a>
+</li>
+<li>
+  <a href="references.html">References</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -214,10 +220,12 @@ You will also create a two-minute narrated screencast illustrating your project 
 For both the website and the screencast, your audience is classmates who worked on other projects. It will be helpful to put yourself in their shoes, and ask what information you think will be most interesting. We suggest you emphasize motivation, questions, and results over methods; after all, interested folks can view your complete project on GitHub.</code></pre>
 <div id="introduction-and-motivation" class="section level2">
 <h2>Introduction and Motivation</h2>
-<p>The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke.</p>
+<p>The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. The dataset includes the U.S. Department of Health and Human Services public health regions. Therefore, we can investigate the leading causes of death of each region, and suggest accordingly public health policy and remedies.</p>
 </div>
 <div id="data-descriptions" class="section level2">
 <h2>Data Descriptions</h2>
+<p>In this report, we are going to focus on percent excess deaths for locality, and how the five leading causes is distributed to the percent excess death. <code>Percent excess deaths</code> for each State are calculated as following:</p>
+<p>percent excess deaths = <span class="math inline">\(\frac{\text{observed death} - \text{expected death}} {\text{observed death}}\)</span></p>
 <ul>
 <li>Version of data used for analysis is <a href="https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD">Here</a>.<br />
 </li>
@@ -238,6 +246,13 @@ For both the website and the screencast, your audience is classmates who worked 
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
+<ul>
+<li>Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015.</li>
+<li>Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of disease.</li>
+<li>Southeast region appears to have significantly high mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.</li>
+<li>The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies.</li>
+<li>We propose to prevent potential excess deaths by improving health care delivery system, introducing funded rural programs to cultivate health awareness and mediating health care workforce shortages.</li>
+</ul>
 </div>
 <div id="notes" class="section level2">
 <h2>Notes</h2>
@@ -245,6 +260,13 @@ For both the website and the screencast, your audience is classmates who worked 
 <li>Link to the GitHub repository containing R Markdown document for this project is <a href="https://github.com/Fionalav/p8105_final_project">Here</a>.</li>
 <li>Link to the Screencast for this project is <a href="">Here</a>.</li>
 <li>Link to the GitHub repository containing R Markdown document for Shiny Dashboard is <a href="https://github.com/Fionalav/final_project_shiny">Here</a>.</li>
+</ul>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><p>Garcia, M. C., Faul, M., Massetti, G., Thomas, C. C., Hong, Y., Bauer, U. E., &amp; Iademarco, M. F. (2017). Reducing Potentially Excess Deaths from the Five Leading Causes of Death in the Rural United States. MMWR. Surveillance Summaries, 66(2), 1-7. <a href="doi:10.15585/mmwr.ss6602a1" class="uri">doi:10.15585/mmwr.ss6602a1</a></p></li>
+<li><p>List of U.S. states by poverty rate. (2017, November 24). Retrieved December 06, 2017, from <a href="https://en.wikipedia.org/wiki/List_of_U.S._states_by_poverty_rate" class="uri">https://en.wikipedia.org/wiki/List_of_U.S._states_by_poverty_rate</a></p></li>
 </ul>
 </div>
 

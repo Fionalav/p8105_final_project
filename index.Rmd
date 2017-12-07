@@ -1,6 +1,5 @@
 ---
 title: Rural-Urban Disparities in Five Leading Causes of Mortality in the United States
-subtitle: Data Science Final Project
 ---
 
 
@@ -16,10 +15,13 @@ For both the website and the screencast, your audience is classmates who worked 
 
 
 ## Introduction and Motivation
-The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. 
+The five leading causes of death in the United States from 1999 to 2014 are cancer, heart disease, unintentional injury, chronic lower respiratory disease, and stroke. The dataset includes the U.S. Department of Health and Human Services public health regions. Therefore, we can investigate the leading causes of death of each region, and suggest accordingly public health policy and remedies.  
 
 ## Data Descriptions
+In this report, we are going to focus on percent excess deaths for locality, and how the five leading causes is distributed to the percent excess death. `Percent excess deaths` for each State are calculated as following: 
 
+percent excess deaths = $\frac{\text{observed death} - \text{expected death}} {\text{observed death}}$
+ 
 * Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
 
 ## Approaches
@@ -36,8 +38,11 @@ Link to the Dashboard for this project is [Here]().
 Link to the Shiny Dashboard for this project is [Here](https://fionalav.shinyapps.io/Final_prject_shiny/).
 
 ## Conclusion
+* Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015. 
+* Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of disease. 
+* Southeast region appears to have significantly high mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.
+* The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies.
+* We propose to prevent potential excess deaths by improving health care delivery system, introducing funded rural programs to cultivate health awareness and mediating health care workforce shortages. 
 
-## Notes
-* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).
-* Link to the Screencast for this project is [Here]().
-* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).
+
+

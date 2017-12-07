@@ -3,10 +3,13 @@
 This site gives introduction and information on a Data Science Final Project for Course P8105 at Mailman School of Public Health, Columbia Univeristy Medical Center.\
 
 Collaborators for this project:\
-Chen Li (cl3664)\
-Weixin Peng (wp2241)\
-Xiangyu Shi (xs2329)\
-Yulan Zhang (yz3306)\
+ * Chen Li (cl3664)\
+
+ * Weixin Peng (wp2241)\
+
+ * Xiangyu Shi (xs2329)\
+
+ * Yulan Zhang (yz3306)\
 
 \newline
 
@@ -17,3 +20,8 @@ Yulan Zhang (yz3306)\
 * Interesting Visulizations from CDC, National Center for Health Statistics, *Data Visualiztion Gallery* is [Here](https://www.cdc.gov/nchs/data-visualization/potentially-excess-deaths/).\
 * Version of data used for analysis is [Here](https://data.cdc.gov/api/views/vdpk-qzpr/rows.csv?accessType=DOWNLOAD).\
 
+* Link to the GitHub repository containing R Markdown document for this project is [Here](https://github.com/Fionalav/p8105_final_project).\
+
+* Link to the GitHub repository containing R Markdown document for Shiny Dashboard is [Here](https://github.com/Fionalav/final_project_shiny).\
+
+* Link to the Screencast for this project is [Here]().
