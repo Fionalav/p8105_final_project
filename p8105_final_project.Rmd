@@ -100,13 +100,10 @@ region_cod_data = cod_data %>%
 
 ```
 
-* the `year` variable contains data collected from 2005-2015.
-* filtered out `United States` in the `state` variable.
-* Added a variable `mortality` which is calculated by observed_deaths/population * 10000. This variable indicates the number of deathes observed in every 10000 people in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`.  
 
 ###Data Processing
 
-After reviewing the dataset, we filtered out entries with `United States` in `state` variable.  Then we removed the percentage mark in the `Percent Potentially Excess Deaths` variable. We also created a variable called `mortality`by calculating the quotient of `observed death` over `population`. Lastly we filtered out entries with `District of\nColumbia` in `region` variable. After selecting the variables of interest, the data is ready for analysis.
+After reviewing the dataset, we filter out entries with `United States` in `state` variable.  Then we remove the percentage mark in the `Percent Potentially Excess Deaths` variable. We also create a variable called `mortality`by calculating the quotient of `observed death` over `population`. Lastly we filter out entries with `District of Columbia` in `region` variable. After selecting the variables of interest, the data is ready for analysis.
 When we analyze the relationships between the outcomes(`mortality`, `percent excess death`, etc) and several covariates(`year`, `cause of death`, `population`, etc), we group the data by the covariates and calculate the mean outcome as response. 
 
 
@@ -151,6 +148,10 @@ Here we show the division of the 10 U.S. Department of Health and Human Services
 
 From the linear regression plot below, we can see that the mortality of cancer, unintentional injury in both metropolitan regions and nonmetropolitan regions decrease through years 2005-2015. In contrast,  the mortality of heart disease and chronic lower respiratory disease in both metropolitan regions and nonmetropolitan regions increase through years 2005-2015. For stroke, the mortality in metropolitan regions decreases through years 2005-2015 whereas the mortality in metropolitan regions slightly increases through years 2005-2015. Concerning mortality and the trend in mortality, unintentional injury and heart disease needs more attention from public health experts.
 
+#### Descriptive Analysis
+
+#### Mortality for five leading causes of death by locality
+
 ```{r cl3664 mortality}
 #mortality~year+cause
 cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Leading_Causes_of_Death.csv") %>%
@@ -176,7 +177,6 @@ lineplotyr = cod_datayr2 %>%
   scale_x_continuous( breaks=seq(2005,2015,1))
   ggplotly(lineplotyr) %>% 
   layout(
-    title = "Mortality over years for five leading causes of death in different locality",
      #xaxis = list(showticklabels = FALSE),
      legend = list(orientation = "h",
                    y = -0.1, x = 0.3))
@@ -184,7 +184,6 @@ lineplotyr = cod_datayr2 %>%
 
 
 
-#### Descriptive Analysis
 
 ```{r xs2329 boxplot,  message=FALSE}
 cod_data %>%
@@ -199,13 +198,13 @@ cod_data %>%
 
 ```
 
-This bar graph shows the distribution of cause of death within mortality in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. We observe that the rank in causes of death is the same regardless of the locality. Nonmetropolitan area seems to have the highest mortaility, the number of deathes observed in every 10000 people. We observe that the median of mortaility of Cancer is the highest among all 5 causes of death, followed by heart disease, unintentional injury, heart disease, chronic lowee respiratory disease and stroke. All 5 causes of death are right skewed regardless of the locality. 
+This bar graph shows the distribution of cause of death within `mortality` in the three geographic regions: `Metropolitan`, `Nonmetropolitan` and `All`. We observe that the rank in causes of death is the same regardless of the locality. Nonmetropolitan area seems to have the highest mortaility, the number of deathes observed in every 10000 people. We observe that the median of mortaility of Cancer is the highest among all 5 causes of death, followed by heart disease, unintentional injury, chronic lower respiratory disease and stroke. All 5 causes of death are right skewed regardless of the locality. 
 
 
 
 #### Linear Model
 
-To further support our graphs above, linear regression is performed between Mortality and Locality. The result shows that metropolitan regions have on average less mortality compared with nonmetropolitan regions.
+To further support our graphs above, linear regression is performed between `mortality` and `locality`. The result shows that metropolitan regions have on average less mortality compared with nonmetropolitan regions.
 
 ```{r xs2329 lm,  message=FALSE}
 mortality_lm = lm(mortality ~locality, data = cod_data)
@@ -279,7 +278,7 @@ cod_datayr2 = read_csv("./data/NCHS_-_Potentially_Excess_Deaths_from_the_Five_Le
   select(year, cause_of_death, state, benchmark, locality, observed_deaths, population, expected_deaths, potentially_excess_deaths, percent_excess_death, mortality)
 ```
 
-As can be seen in the plot, if we stratify by cause, we will find some increasing pattern in subgroups(unintentional injury) in certain period of time(2010-2015). In nonmetropolitan regions, unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage in nonmetropolitan areas and needs more attention from public health experts.
+As can be seen in the following plot, if we stratify by `cause of death`, we will find some increasing pattern of `mean percentage of excess death` in subgroups(unintentional injury) and some decreasing patterns in other subgroups(cancer, heart disease, etc). In nonmetropolitan regions(right), `unintentional injury` and `chronic lower respiratory disease` have on average the highest excess death percentage in nonmetropolitan areas and need more attention from public health experts.
 
 ```{r cl3664 plot,  message=FALSE}
 cod_datayr2 %>%
@@ -301,8 +300,8 @@ cod_datayr2 %>%
     )
 ```
 
-####Linear Regression Analysis
-From the linear model based on 2010 fixed benchmark, we can tell that controlling for cause of death, the excess death percentage is expected to decrease by 0.37 each year. Overall, the excess death percentage shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein unintentional injury and chronic lower respiratory disease have on average the highest excess death percentage.
+#####Linear Regression Analysis
+From the linear model based on 2010 fixed benchmark, we can tell that controlling for `cause of death`, the `mean percentage of excess death` shows a decreasing pattern with time. Besides, in the same year, compared with cancer, other 4 causes have significantly higher excess death percentage. Herein `unintentional injury` and `chronic lower respiratory disease` have on average the highest excess death percentage.
 
 ```{r cl3664 lm,  message=FALSE}
 cod_datayrlm = cod_datayr2 %>%
@@ -318,7 +317,7 @@ kable(rl5)
 
 **For each of the five cause of death, what is the mean percent of excess death? It is different across locality.**
 
-As shown in the boxplots for all three regions, the rank of Mean Percentage of Excess Death of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` and higher for `Nonmetropolotan`.
+As shown in the boxplots for all three regions, the rank of `mean percentage of excess death` of the five cause of death remain the same for different localities. For all five causes, the mean percent of death is lower for `Metropolitan` than `Nonmetropolitan`.
 
 ```{r yz3306.1,  message=FALSE}
 cod_data %>%
@@ -347,10 +346,12 @@ We first fit `hhs_region` into the linear model, as well as a linear model with 
 
 
 ```{r}
+#Mean percent excess deaths ~ hhs_region
 region_lm = lm(region_cod_data$mean_ped~region_cod_data$hhs_region)
 rl1 = broom::tidy(region_lm)
 kable(rl1)
 
+#Mean percent excess deaths ~ hhs_region + locality
 region_locality_lm = lm(region_cod_data$mean_ped ~ region_cod_data$hhs_region+region_cod_data$locality)
 rl2 = broom::tidy(region_locality_lm)
 kable(rl2)
@@ -358,13 +359,13 @@ kable(rl2)
 
 
 
-As shown in the above summary tables, with respect to region 1, only region 2 have negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 have 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher comparing with region 1. Similiar results yield from regression adjusted for Locality. Adjusting locality, region 4 and 6 have top two highest increase in mean percetage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan have 2% less than overall mean percetage of excess deaths and nonmetropolitan have 7% more than overall mean percetage of excess death. Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of deaths. 
+As shown in the above summary tables, with respect to region 1, only region 2 has negative estimated coefficient, indicating less mean percentage of excess death . Specifically, comparing with region 1, region 2 has 1.67% less mean percentage of excess death on average. From region 3 to region 10, the mean percentage of excess death is higher compared with region 1. Similar results yield from regression adjusted for Locality. Adjusting `locality`, regions 4 and 6 have the top two highest increase in mean percentage of excess death with respect to region 1. Adjusting for different regions, similar result yield that, on average, metropolitan areas have 2% less than overall mean percentage of excess deaths and nonmetropolitan areas have 7% more than overall mean percentage of excess death. Thus we further checked the distribution of mean percent excess death varied by `hhs_region` across all five causes of death. 
 
 #####Visualization
 
-As mentioned above, we have significant difference in the mean percetage of excess death for different HHS regions. For all five causes of death if we seperate the effect of the Difference in Cause of Death into different HHS region, the following chart gives detailed information.\
+As mentioned above, we have significant difference in the `mean percentage of excess death` for different `HHS regions`. For all five causes of death, if we seperate the effect of the difference in cause of death into different `HHS region`, the following chart gives detailed information.\
 
-As shown in the following graph, For all 5 causes of death, Region 3,4 and 6, have the top 3 mean percetage of excess death.\
+As shown in the following graph, For all 5 causes of death, regions 3,4 and 6 have the top 3 mean percentage of excess death.\
 
 
 ```{r yz3306.3, message=FALSE}
@@ -388,10 +389,10 @@ cod_data %>%
 ```
 
 
-In order to take the effect of Localtiy into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://fionalav.shinyapps.io/Final_prject_shiny/).\
+In order to take the effect of `localtiy` into account, Flexdashboard with Shiny will be helpful. the link to the Shiny page is [Here - "Comparison of Difference in Mean %Excess Death of Five Leading Causes of Death between Metropolitan and Nonmetropolitan Area in each HHS regions"](https://fionalav.shinyapps.io/Final_prject_shiny/).\
 Select different `HHS region` to visualized the difference between Metropolitan and Nonmetropolitan Area for all five causes of death, respectively.
 
-As shown in the `Shiny-enabled Flexdashboard`, we observe that for all five causes of death, the Mean %Excess Death is higher in Nonmetropolitan than Metropolitan Area for region 1, 3, 4, 6, 7 and 10, lower in Nonmetropolitan than Metropolitan Area for region 2, 5, 8, 9. In region 2, 5 and 9, only Stroke is higher in Metropolitan Area. For all other four causes of death, Nonmetropolitan is higher than Metropolitan Area.
+As shown in the `Shiny-enabled Flexdashboard`, we observe that for all five causes of death, the Mean Percentage Excess Death is higher in Nonmetropolitan than Metropolitan Area for region 1, 3, 4, 6, 7 and 10, lower in Nonmetropolitan than Metropolitan Area for region 2, 5, 8, 9. In region 2, 5 and 9, only Stroke is higher in Metropolitan Area. For all other four causes of death, Nonmetropolitan is higher than Metropolitan Area.
 
 
 
@@ -399,7 +400,7 @@ As shown in the `Shiny-enabled Flexdashboard`, we observe that for all five caus
 
 
 
-Here we have generated a map of the United States bases with color gradient showing the mean percent of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percent excess death varied by locality -- metropolitan and nonmetropolitan areas -`U.S. Map with Mean Percent of Excess Death Rate Distribution`. We observe for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
+Here we have generated a map of the United States bases with color gradient showing the mean percentage of excess death rate regardless of the locality. [Here](https://fionalav.shinyapps.io/Final_prject_shiny/) is a Shiny link for a closer look of the national distribution of mean percentage excess death varied by locality -- metropolitan and nonmetropolitan areas -`U.S. Map with Mean Percent of Excess Death Rate Distribution`. We observe that for both metropolitan and nonmetropolitan areas, the Southeast region appears to have significantly high mean percent of excess death rate than the others, but the rural-urban gap is not apparent. This can be explained by the geographic features of the Southeast region. 
 
 
 ```{r,  message=FALSE}
@@ -443,16 +444,24 @@ If we compare this map with the poverty map of the US, we see that states with h
 
 ## Conclusion and Public Health implications 
 
+<<<<<<< HEAD
 In this project, we analyzed the rural-urban gap of mortality rate and mean percent excess deaths in the United States from 2005-2015 with the goal of suggesting possible preventive methods and best practices to reduce such gap based on our findings. Major findings in this project include\
+=======
+In this project, we analyzed the rural-urban gap of mortality rate and mean percent excess deaths in the United States from 2005-2015 with the goal of suggesting possible preventive methods and best practices to reduce such gap based on our findings. Major findings in this project includes
+ Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015. 
+Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of disease. 
+Southeast region appears to have significantly high mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.
+The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies. 
+>>>>>>> 33eed9c197ae0d29bee910c58688f5e7b1efd2e5
 
 * Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all ten years from 2005 to 2015.\
 * Nonmetropolitan has significantly higher mean percent excess death than metropolitan areas in all five causes of death.\
 * Southeast region appears to have significantly higher mean percent of excess death rate than the others for both metropolitan and nonmetropolitan areas, but the rural-urban gap is not apparent.\
 * The mean percent excess death from the five leading causes in rural areas this higher than that in urban areas in all 10 public health regions, although in each public health region, the distribution of mortality of each five causes of disease varies.\
 
-The above findings suggest that there might be sociodemographic, cultural, behavioral, and structural differences between rural-urban areas that contribute to the gap in mortality rate and mean percent excess deaths. People living in the rural area are more likely to experience poverty, poor nutrition, lack of physical activity, higher prevalence of tobacco use. More importantly, people from the rural areas are more vulnerable to potential disease due to the barriers to health care access. In rural areas as well as some less developed Southern states, health cares needs are often unmet due to lack of preventive and screening serves and timely urgent and emergency services. 
+The above findings suggest that there might be sociodemographic, cultural, behavioral, and structural differences between rural-urban areas that contribute to the gap in mortality rate and mean percent excess deaths. People living in the rural area are more likely to experience poverty, poor nutrition, lack of physical activity, higher prevalence of tobacco use. More importantly, people from the rural areas are more vulnerable to potential disease due to the barriers to health care access. In rural areas as well as some less developed Southern states, health cares needs are often unmet due to lack of preventive and screening services and timely urgent and emergency services. 
 
-From the findings of this project, we wish to emphasize the need and epidemiological burden of disease and raise the awareness of the the rural-urban gap and address the nonuniform achievements of medical service in rural areas. Here we propose to prevent potential excess deaths by improving health care delivery system, introducing funded rural programs to cultivate health awareness and mediating health care workforce shortages. 
+From the findings of this project, we wish to emphasize the need and epidemiological burden of disease and raise the awareness of the rural-urban gap and address the nonuniform achievements of medical service in rural areas. Here we propose to prevent potential excess deaths by improving health care delivery system, introducing funded rural programs to cultivate health awareness and mediating health care workforce shortages. 
 
 
 
